@@ -5,6 +5,7 @@
         @select="handleSelect"
         mode="horizontal">
           <el-menu-item  index="home">Booker</el-menu-item>
+          <el-menu-item  index="authors">Authors</el-menu-item>
           <el-submenu index="settings">
             <template slot="title"> <i class="el-icon-setting"></i>{{ user.name }} {{ user.surname }}</template>
             <el-menu-item :click="logout" index="logout">Logout</el-menu-item>
@@ -45,6 +46,9 @@
             break;
           case 'home':
             this.$router.push({name: 'home'});
+            break;
+          case 'authors':
+            this.$router.push({name: 'authors'});
             break;
           default:
         }

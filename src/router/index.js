@@ -7,6 +7,8 @@ import Welcome from '@/components/pages/Welcome';
 import Home from '@/components/pages/Home';
 import Profile from '@/components/pages/Profile';
 
+import Authors from '@/components/pages/author/Authors';
+
 Vue.use(Router);
 
 const router = new Router({
@@ -23,6 +25,12 @@ const router = new Router({
       name: 'profile',
       component: Profile,
       meta: {auth: true},
+    },
+    {
+      path: '/author',
+      name: 'authors',
+      component: Authors,
+      meta: {auth: true}
     },
     {
       path: '/welcome',
