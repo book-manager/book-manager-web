@@ -8,6 +8,7 @@ import Home from '@/components/pages/Home';
 import Profile from '@/components/pages/Profile';
 
 import Authors from '@/components/pages/author/Authors';
+import AuthorForm from '@/components/pages/author/NewAuthor';
 
 Vue.use(Router);
 
@@ -30,6 +31,12 @@ const router = new Router({
       path: '/author',
       name: 'authors',
       component: Authors,
+      meta: {auth: true}
+    },
+    {
+      path: '/author/new',
+      name: 'authorNew',
+      component: AuthorForm,
       meta: {auth: true}
     },
     {
