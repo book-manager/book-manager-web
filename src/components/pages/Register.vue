@@ -1,75 +1,55 @@
 <template>
-  <div class="columns">
-    <div class="column is-4 is-offset-4">
-      <card title="Register" icon="user-plus">
-        <form @submit="makeRegister">
-          <b-field label="First Name">
-            <b-input
-              type="text"
+  <section>
+    <v-container grid-list-md text-xl-center
+      align-center=true class="register-box .mx-auto " elevation-3
+    >
+      <v-layout>
+        <v-flex xs12>
+          <v-form v-model="formValid">
+            <v-text-field
+              label="First name"
               v-model="first_name"
-              maxlength="30"
               required
-              :has-counter="true"
-            ></b-input>
-          </b-field>
-
-          <b-field label="Last Name">
-            <b-input
-              type="text"
+            ></v-text-field>
+            <v-text-field
+              label="Surname"
               v-model="last_name"
-              maxlength="30"
               required
-              :has-counter="true"
-            ></b-input>
-          </b-field>
-
-          <b-field label="Email">
-            <b-input
-              type="email"
-              icon="envelope"
-              required
+            ></v-text-field>
+            <v-text-field
+              label="Email"
               v-model="email"
-            ></b-input>
-          </b-field>
-
-          <div class="columns">
-            <div class="column">
-              <b-field label="Password">
-                <b-input
-                  type="password"
-                  v-model="password"
-                  class="is-half"
-                  icon="key"
-                  minlength="6"
-                  required
-                  maxlength="20"
-                  :has-counter="false"
-                  password-reveal
-                ></b-input>
-              </b-field>
-            </div>
-            <div class="column">
-              <b-field label="Confirm Password">
-                <b-input
-                  type="password"
-                  v-model="cpassword"
-                  icon="key"
-                  minlength="6"
-                  required
-                  maxlength="20"
-                  :has-counter="false"
-                  password-reveal
-                ></b-input>
-              </b-field>
-            </div>
-          </div>
-          <div class="has-text-danger has-text-centered">{{error}}</div>
-          <button type="submit" :class="['button', 'is-primary', 'is-fullwidth', {'is-loading': pending}]">Register</button>
-        </form>
-      </card>
-    </div>
-  </div>
-
+              required
+              :rules="emailRules"
+            ></v-text-field>
+            <v-text-field
+              label="Password"
+              v-model="password"
+              required
+              min="8"
+              type="password"
+              counter
+            ></v-text-field>
+            <v-text-field
+              label="Repeat password"
+              v-model="cpassword"
+              required
+              min="8"
+              type="password"
+              counter
+            ></v-text-field>
+            <v-btn
+                @click="register"
+                :disabled="!valid"
+              >
+                Register
+              </v-btn>
+              <v-btn @click="clear">clear</v-btn>
+            </v-form>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </section>
 </template>
 
 <script>
@@ -85,25 +65,54 @@
         cpassword: '',
         pending: false,
         error: '',
+        formValid: true,
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+        ]
       };
     },
     methods: {
-      makeRegister (e) {
+      register (e) {
         e.preventDefault();
         this.pending = true;
         this.$store.dispatch('register', this)
-          .then(() => {
+          .then((response) => {
             this.pending = false;
-            this.$router.push({name: 'home'});
+            this.$router.push({path: '/login'});
           })
           .catch(err => {
             this.error = err;
             this.pending = false;
           });
       },
+      clear () {
+
+      },
     },
     components: {
       'card': Card,
     },
+    computed: {
+      valid () {
+        if (this.first_name !== '' &&
+            this.last_name !== '' &&
+            this.email !== '' &&
+            this.password !== '' &&
+            this.cpassword !== ''
+        ) {
+          return true;
+        }
+
+        return false;
+      }
+    }
   };
 </script>
+
+<style scoped>
+  .register-box {
+    min-width: 40%;
+  }
+</style>
+

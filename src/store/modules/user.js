@@ -40,11 +40,12 @@ const actions = {
         last_name,
         email,
         password,
-      }).then(({ data }) => {
-        if (data.success) {
-          store.commit(USER_AUTH_SUCCESS);
+        cpassword
+      }).then((response) => {
+        if (response.status === 201) {
+          resolve(response);
         } else {
-          reject(data.message);
+          reject(response.message);
         }
       }).catch(err => {
         reject(err);
