@@ -3,3 +3,6 @@ export const USER_LOGOUT = 'USER_LOGOUT';
 
 // Authors
 export const FETCH_AUTHORS = 'FETCH_AUTHORS';
+
+// Friends
+export const SEARCH_USERS = 'SEARCH_USERS';

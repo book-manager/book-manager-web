@@ -6,10 +6,15 @@ import router from './router';
 import { sync } from 'vuex-router-sync';
 import store from './store';
 import './main.scss';
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import 'vuetify/dist/vuetify.min.css';
 
-Vue.use(ElementUI);
+import AtComponents from 'at-ui';
+import 'at-ui-style'; // Import CSS
+import Vuetify from 'vuetify';
+
+Vue.use(AtComponents);
+Vue.use(Vuetify);
+
 Vue.config.productionTip = false;
 
 sync(store, router);

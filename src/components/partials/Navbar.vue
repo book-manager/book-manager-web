@@ -1,30 +1,29 @@
 <template>
   <section>
-    <div v-if="isLogged">
-      <el-menu
-        @select="handleSelect"
-        mode="horizontal">
-          <el-menu-item  index="home">Booker</el-menu-item>
-          <el-menu-item  index="authors">Authors</el-menu-item>
-          <el-submenu index="settings">
-            <template slot="title"> <i class="el-icon-setting"></i>{{ user.name }} {{ user.surname }}</template>
-            <el-menu-item :click="logout" index="logout">Logout</el-menu-item>
-          </el-submenu>
-      </el-menu>
-    </div>
-    <div class="navbar-not-logged" v-if="!isLogged">
-       <el-menu
-          mode="horizontal">
-        <el-menu-item index="login">
-          <router-link to="/login">
-            Login
-          </router-link>
-        </el-menu-item>
-        <el-menu-item index="register">
-          <router-link to="/register">Register</router-link>
-        </el-menu-item>
-      </el-menu>
-    </div>
+    <at-menu mode="horizontal" v-if="isLogged" class="navbar">
+      <div>
+        <at-menu-item name="authors"><router-link to="author">Author</router-link></at-menu-item>
+        <at-menu-item name="books">Books</at-menu-item>
+        <at-submenu>
+          <template slot="title">Friends</template>
+          <at-menu-item name="friends"><router-link to="">Friends</router-link></at-menu-item> 
+          <at-menu-item name="searchFriends"><router-link to="friends/search">Search friend</router-link></at-menu-item>
+        </at-submenu>
+      </div>
+      <div>
+        <at-submenu>
+          <template slot="title"><i class="icon icon-settings"></i>{{ user.name }} {{ user.surname }}</template>
+          <at-menu-item name="users">Users</at-menu-item>
+          <at-menu-item name="books">Books</at-menu-item>
+          <at-menu-item name="profile">Profile</at-menu-item>
+          <at-menu-item name="logout" ><p @click="logout">Logout</p></at-menu-item>
+        </at-submenu>
+      </div>
+    </at-menu>
+    <at-menu mode="horizontal" v-if="!isLogged" class="navbar-not-logged">
+      <at-menu-item name="login"><router-link to="login">Login</router-link></at-menu-item>
+      <at-menu-item name="register"><router-link to="register">Register</router-link></at-menu-item>
+    </at-menu>
   </section>
 </template>
 
@@ -35,23 +34,9 @@
     computed: mapGetters(['isLogged', 'user']),
     methods: {
       logout () {
-        console.log('Logging out');
+        console.log('Logout');
         this.$store.dispatch('logout');
         this.$router.push({name: 'welcome'});
-      },
-      handleSelect (key, path) {
-        switch (key) {
-          case 'logout':
-            this.logout();
-            break;
-          case 'home':
-            this.$router.push({name: 'home'});
-            break;
-          case 'authors':
-            this.$router.push({name: 'authors'});
-            break;
-          default:
-        }
       }
     },
   };
@@ -67,4 +52,5 @@
     display: flex;
     justify-content: flex-end;
   }
+
 </style>
