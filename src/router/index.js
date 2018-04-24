@@ -9,10 +9,10 @@ import Profile from '@/components/pages/Profile';
 
 import Authors from '@/components/pages/author/Authors';
 import AuthorForm from '@/components/pages/author/NewAuthor';
-import AuthorDetails from '@/components/pages/author/AuthorDetails';
+// import AuthorDetails from '@/components/pages/author/AuthorDetails';
 
-import Books from '@/components/pages/book/Books';
-import BooksForm from '@/components/pages/book/BookForm';
+// import Books from '@/components/pages/book/Books';
+// import BooksForm from '@/components/pages/book/BookForm';
 
 import FriendsSearch from '@/components/pages/friend/FriendsSearch';
 
@@ -39,24 +39,24 @@ const router = new Router({
       component: Authors,
       meta: {auth: true}
     },
-    {
-      path: '/author/:id',
-      name: 'AuthorDetails',
-      component: AuthorDetails,
-      meta: { auth: true }
-    },
-    {
-      path: '/books',
-      name: 'books',
-      component: Books,
-      meta: { auth: true }
-    },
-    {
-      path: '/books/new',
-      name: 'booksNew',
-      component: BooksForm,
-      meta: { auth: true }
-    },
+    // {
+    //   path: '/author/:id',
+    //   name: 'AuthorDetails',
+    //   component: AuthorDetails,
+    //   meta: { auth: true }
+    // },
+    // {
+    //   path: '/books',
+    //   name: 'books',
+    //   component: Books,
+    //   meta: { auth: true }
+    // },
+    // {
+    //   path: '/books/new',
+    //   name: 'booksNew',
+    //   component: BooksForm,
+    //   meta: { auth: true }
+    // },
     {
       path: '/author/new',
       name: 'authorNew',

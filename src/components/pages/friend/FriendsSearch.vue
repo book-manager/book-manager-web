@@ -24,11 +24,6 @@
               <v-list-tile-content>
                 <v-list-tile-title>{{ user.name }} {{ user.surname }}</v-list-tile-title>
               </v-list-tile-content>
-              <v-list-tile-action>
-                <v-btn ripple @click="addFriend(user.id)">
-                  Add
-                </v-btn>
-              </v-list-tile-action>
             </v-list-tile>
           </template>
         </v-list>
@@ -49,7 +44,7 @@ export default {
       this.$store.dispatch('searchUsers', this);
     },
     addFriend (id) {
-      console.log(id);
+      // this.$store.dispatch('addFriend', { id: id });
     }
   },
   computed: {
