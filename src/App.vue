@@ -1,10 +1,12 @@
 <template>
+<v-app>
   <div id="app">
     <navbar/>
     <div class="container">
       <router-view/>
     </div>
   </div>
+</v-app>
 </template>
 
 <script>

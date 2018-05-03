@@ -15,7 +15,7 @@
         </v-flex>
       </v-layout>
       <v-layout row elevation-5>
-        <v-list >
+        <v-list class="lista">
           <template v-for="user in users">
             <v-list-tile avatar :key="user.id" class="user-list">
               <v-list-tile-avatar>
@@ -25,6 +25,7 @@
                 <v-list-tile-title>{{ user.name }} {{ user.surname }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
+            <v-btn @click="viewProfile(user.id)">Profile</v-btn>
           </template>
         </v-list>
       </v-layout>
@@ -43,8 +44,8 @@ export default {
     search () {
       this.$store.dispatch('searchUsers', this);
     },
-    addFriend (id) {
-      // this.$store.dispatch('addFriend', { id: id });
+    viewProfile (id) {
+      this.$router.push({ path: `/user/${id}` });
     }
   },
   computed: {
@@ -56,4 +57,8 @@ export default {
 </script>
 
 <style scoped>
+  .lista {
+    display: flex;
+    justify-content: flex-end;
+  }
 </style>

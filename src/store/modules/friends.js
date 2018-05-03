@@ -13,7 +13,7 @@ const getters = {
 const actions = {
   searchUsers (store, { query }) {
     return new Promise((resolve, reject) => {
-      axios.post('http://localhost:4000/friends/search', {
+      axios.post('http://localhost:4100/api/friends/search', {
         query
       }, {
         headers: {
@@ -21,14 +21,13 @@ const actions = {
         }
       }).then((response) => {
         console.log(response.data);
-        store.commit(SEARCH_USERS, { users: response.data.data });
+        store.commit(SEARCH_USERS, { users: response.data.data.data });
       });
     });
   },
   addFriend (store, { id }) {
     return new Promise((resolve, reject) => {
-      axios.post('http://localhost:3000/friends', {
-        current_user_id: store.getters.user.id,
+      axios.post('http://localhost:4100/api/friends', {
         friend_id: id
       }, {
         headers: {
@@ -38,6 +37,17 @@ const actions = {
         console.log(response);
       });
     });
+  },
+  fetchFriends (store) {
+    return new Promise((resolve, reject) => {
+      axios.get(`http://localhost:4100/api/friends`, {
+        headers: {
+          'Authorization': `Bearer ${store.getters.token}`
+        }
+      }).then((response) => {
+        resolve(response.data.data.data)
+      })
+    })
   }
 };
 

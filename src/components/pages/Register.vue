@@ -1,7 +1,11 @@
 <template>
   <section>
-    <v-container grid-list-md text-xl-center
-      align-center=true class="register-box .mx-auto " elevation-3
+    <v-container 
+      grid-list-md 
+      text-xl-center
+      align-center=true 
+      class="register-box .mx-auto" 
+      elevation-3
     >
       <v-layout>
         <v-flex xs12>
@@ -65,7 +69,7 @@
         cpassword: '',
         pending: false,
         error: '',
-        formValid: true,
+        formValid: false,
         emailRules: [
           v => !!v || 'E-mail is required',
           v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'

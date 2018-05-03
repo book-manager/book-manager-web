@@ -6,13 +6,11 @@ import router from './router';
 import { sync } from 'vuex-router-sync';
 import store from './store';
 import './main.scss';
-import 'vuetify/dist/vuetify.min.css';
 
-import AtComponents from 'at-ui';
-import 'at-ui-style'; // Import CSS
+import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
+
 import Vuetify from 'vuetify';
 
-Vue.use(AtComponents);
 Vue.use(Vuetify);
 
 Vue.config.productionTip = false;

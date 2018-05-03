@@ -54,6 +54,28 @@ const actions = {
   },
   logout (store) {
     store.commit(USER_LOGOUT);
+  },
+  getUserDetails (store, { id }) {
+    return new Promise((resolve, reject) => {
+      axios.get(`http://localhost:4100/api/users/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${store.getters.token}`
+        }
+      }).then((response) => {
+        resolve(response.data);
+      })
+    })
+  },
+  checkUserFriendship (store, { friendId }) {
+    return new Promise((resolve, reject) => {
+      axios.get(`http://localhost:4100/api/friends/check-friendship/${friendId}`, {
+        headers: {
+          'Authorization': `Bearer ${store.getters.token}`
+        }
+      }).then((response) => {
+        resolve(response);
+      });
+    })
   }
 };
 

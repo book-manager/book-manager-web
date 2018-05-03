@@ -1,10 +1,39 @@
 <template>
   <section class="login-form">
-    <form>
-      <at-input v-model="email" placeholder="Email" class="input"></at-input>
-      <at-input v-model="password" placeholder="Password" type="password" class="input">Password</at-input>
-      <at-button type="primary" hollow @click="login">Login</at-button>
-    </form>
+    <v-container
+      grid-list-md 
+      text-xl-center
+      align-center=true 
+      class="register-box .mx-auto" 
+      elevation-3
+    >
+      <v-layout xs12>
+        <v-form>
+          <v-text-field
+          label="Email"
+          v-model="email"
+          required
+          :rules="emailRules">
+          </v-text-field>
+          <v-text-field
+            label="Password"
+            v-model="password"
+            required
+            min="8"
+            type="password"
+            counter
+          ></v-text-field>
+          <v-btn
+            color="primary"
+            flat
+            @click="login"
+            :disabled="!valid"
+          >
+            Login
+          </v-btn>
+        </v-form>
+      </v-layout>
+    </v-container>
   </section>
 </template>
 
@@ -15,6 +44,10 @@
       return {
         email: '',
         password: '',
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+        ]
       };
     },
     methods: {
@@ -31,6 +64,11 @@
           });
       },
     },
+    computed: {
+      valid () {
+        return this.password.length >= 7;
+      }
+    }
   };
 </script>
 
