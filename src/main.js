@@ -11,7 +11,11 @@ import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 
 import Vuetify from 'vuetify';
 
+import VueMaterial from 'vue-material';
+import 'vue-material/dist/vue-material.min.css';
+
 Vue.use(Vuetify);
+Vue.use(VueMaterial)
 
 Vue.config.productionTip = false;
 

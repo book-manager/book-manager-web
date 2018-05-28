@@ -5,12 +5,14 @@ import { USER_LOGOUT, USER_AUTH_SUCCESS } from '../mutation-types';
 const state = {
   token: sessionStorage.getItem('token') || '',
   user: JSON.parse(sessionStorage.getItem('user')) || {},
+  is_admin: sessionStorage.getItem('admin') || false
 };
 
 const getters = {
   isLogged: state => !!state.token,
   user: state => state.user,
-  token: state => state.token
+  token: state => state.token,
+  is_admin: state => state.is_admin
 };
 
 const actions = {
@@ -81,10 +83,12 @@ const actions = {
 
 const mutations = {
   [USER_AUTH_SUCCESS] (store, { user, token }) {
+    console.log(user)
     store.user = user;
     store.error = '';
     store.token = token;
     sessionStorage.setItem('token', token);
+    sessionStorage.setItem('admin', user.is_admin);
     sessionStorage.setItem('user', JSON.stringify(user));
   },
   [USER_LOGOUT] (store) {

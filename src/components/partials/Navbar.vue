@@ -4,15 +4,40 @@
     <v-toolbar-title>Booker</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
-      <v-btn flat>Authors</v-btn>
-      <v-btn flat>Books</v-btn>
+      <v-menu offset-y>
+        <v-btn flat slot="activator">Authors</v-btn>
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-title><router-link to="friends">My authors</router-link></v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-title-title><router-link to="/author/search">Search</router-link></v-list-title-title>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-title-title><router-link to="/author/new">Add</router-link></v-list-title-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu> 
+      <v-menu offset-y>
+        <v-btn flat slot="activator">Books</v-btn>
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-title><router-link to="friends">My authors</router-link></v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-title-title><router-link to="/author/search">Search</router-link></v-list-title-title>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-title-title><router-link to="/author/new">Add</router-link></v-list-title-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>  
       <v-menu offset-y>
         <v-btn flat slot="activator">Friends</v-btn>
         <v-list>
           <v-list-tile>
             <v-list-tile-title><router-link to="friends">Friends</router-link></v-list-tile-title>
           </v-list-tile>
-
           <v-list-tile>
             <v-list-title-title><router-link to="friends/search">Search</router-link></v-list-title-title>
           </v-list-tile>

@@ -9,7 +9,8 @@ import Profile from '@/components/pages/Profile';
 
 import Authors from '@/components/pages/author/Authors';
 import AuthorForm from '@/components/pages/author/NewAuthor';
-// import AuthorDetails from '@/components/pages/author/AuthorDetails';
+import AuthorDetails from '@/components/pages/author/AuthorDetails';
+import AuthorSearch from '@/components/pages/author/AuthorSearch';
 
 // import Books from '@/components/pages/book/Books';
 // import BooksForm from '@/components/pages/book/BookForm';
@@ -42,29 +43,23 @@ const router = new Router({
       component: Authors,
       meta: {auth: true}
     },
-    // {
-    //   path: '/author/:id',
-    //   name: 'AuthorDetails',
-    //   component: AuthorDetails,
-    //   meta: { auth: true }
-    // },
-    // {
-    //   path: '/books',
-    //   name: 'books',
-    //   component: Books,
-    //   meta: { auth: true }
-    // },
-    // {
-    //   path: '/books/new',
-    //   name: 'booksNew',
-    //   component: BooksForm,
-    //   meta: { auth: true }
-    // },
+    {
+      path: '/author/details/:id',
+      name: 'authorNew',
+      component: AuthorDetails,
+      meta: { auth: true }
+    },
+    {
+      path: '/author/search',
+      name: 'AuthorSearch',
+      component: AuthorSearch,
+      meta: { auth: true }
+    },
     {
       path: '/author/new',
       name: 'authorNew',
       component: AuthorForm,
-      meta: { auth: true }
+      meta: { auth: true, admin_only: true }
     },
     {
       path: '/welcome',
@@ -101,14 +96,26 @@ const router = new Router({
     }
   ]
 });
+
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.auth)) {
+  if (to.meta.auth) {
     if (!store.getters.isLogged) {
+      console.log('Not logged route')
       next({
         path: '/welcome',
       });
     } else {
-      next();
+      if (to.meta.admin_only) {
+        if (store.getters.is_admin) {
+          next();
+        } else {
+          next({
+            path: '/'
+          });
+        }
+      } else {
+        next();
+      }
     }
   } else {
     next();

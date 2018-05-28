@@ -24,18 +24,43 @@ const actions = {
       });
     });
   },
-  addAuthor (store, { authorForm }) {
+  addAuthor (store, { form }) {
     return new Promise((resolve, reject) => {
-      axios.post('http://localhost:3000/author', {
-        name: authorForm.name,
-        surname: authorForm.surname,
-        description: authorForm.description
+      axios.post('http://localhost:4100/api/author', {
+        author: {
+          name: form.firstName,
+          surname: form.lastName,
+          description: form.description,
+          birthDate: form.birthDate
+        }
       }, {
         headers: {
           'Authorization': `Bearer: ${store.getters.token}`
         }
       }).then((response) => {
-        console.log(response);
+        resolve(response.data)
+      });
+    });
+  },
+  fetchAuthorDetails (store, { id }) {
+    return new Promise((resolve, reject) => {
+      axios.get(`http://localhost:4100/api/author/${id}`, {
+        headers: {
+          'Authorization': `Bearer: ${store.getters.token}`
+        }
+      }).then((response) => {
+        resolve(response.data);
+      });
+    });
+  },
+  searchAuthor (store, { query }) {
+    return new Promise((resolve, reject) => {
+      axios.get(`http://localhost:4100/api/author/search?query=${query}`, {
+        headers: {
+          'Authorization': `Bearer: ${store.getters.token}`
+        }
+      }).then((response) => {
+        resolve(response.data);
       });
     });
   }
