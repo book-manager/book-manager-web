@@ -13,7 +13,7 @@ import AuthorDetails from '@/components/pages/author/AuthorDetails';
 import AuthorSearch from '@/components/pages/author/AuthorSearch';
 
 // import Books from '@/components/pages/book/Books';
-// import BooksForm from '@/components/pages/book/BookForm';
+import BooksForm from '@/components/pages/book/BookForm';
 
 import FriendsSearch from '@/components/pages/friend/FriendsSearch';
 import FriendsList from '@/components/pages/friend/FriendsList';
@@ -93,7 +93,13 @@ const router = new Router({
       name: 'UserProfile',
       component: UserProfile,
       meta: { auth: true }
-    }
+    },
+    {
+      path: '/books/new',
+      name: 'booksNew',
+      component: BooksForm,
+      meta: { auth: true }
+    },
   ]
 });
 
