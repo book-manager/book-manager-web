@@ -24,21 +24,20 @@ const actions = {
       });
     });
   },
-  addAuthor (store, { form }) {
+  addAuthor (store, { name, surname, description }) {
     return new Promise((resolve, reject) => {
       axios.post('http://localhost:4100/api/author', {
         author: {
-          name: form.firstName,
-          surname: form.lastName,
-          description: form.description,
-          birthDate: form.birthDate
+          name: name,
+          surname: surname,
+          description: description,
         }
       }, {
         headers: {
           'Authorization': `Bearer: ${store.getters.token}`
         }
       }).then((response) => {
-        resolve(response.data)
+        resolve(response.data);
       });
     });
   },

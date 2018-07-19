@@ -1,28 +1,34 @@
 <template>
   <section>
-    <div class="md-layout md-gutter author-info md-elevation-10 md-alignment-center-center">
-      <div class="md-layout-item md-size-90 search-bar">
-        <md-field>
-          <label>Search for an author</label>
-          <md-input v-model="query"></md-input>
-        </md-field>
-      </div>
-      <div class="md-layout-item md-size-10">
-        <md-button class="md-raised md-primary" @click="search">Search</md-button>
-      </div>
-    </div>
-    <div class="md-layout md-gutter md-alignment-center-center">
-      <md-table v-model="authors" md-card class="author-table">
-        <md-table-toolbar>
-          <h1 class="md-title">Authors</h1>
-        </md-table-toolbar>
-
-        <md-table-row  @click="showDetails(item.id)" slot="md-table-row" slot-scope="{ item }">
-          <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
-          <md-table-cell md-label="Surname" md-sort-by="surname">{{ item.surname }}</md-table-cell>
-        </md-table-row>
-      </md-table>
-    </div>
+    <v-container fluid grid-list-xl>
+      <v-layout row justify-space-between>
+        <v-flex xs8 xl10>
+           <v-text-field
+              name="search"
+              label="Search for an author"
+              id="searchBox"
+              v-model="query"
+            ></v-text-field>
+        </v-flex>
+        <v-flex xs4 xl2>
+          <v-btn @click="search">Search</v-btn>
+        </v-flex>
+      </v-layout>
+      <v-layout row elevation-5>
+        <v-list class="lista">
+          <template v-for="author in authors">
+            <v-list-tile avatar :key="author.id" class="user-list" @click="showDetails(author.id)">
+              <v-list-tile-avatar>
+                <img :src="author.avatar_url">
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ author.name }} {{ author.surname }}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </template>
+        </v-list>
+      </v-layout>
+    </v-container>
   </section>
 </template>
 

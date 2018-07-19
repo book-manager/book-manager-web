@@ -1,116 +1,75 @@
 <template>
   <section>
-    <div>
-      <form novalidate class="md-layout" @submit.prevent="validateUser">
-        <md-card class="author-form md-layout-item md-small-size-100 md-size-50">
-          <md-card-header>
-            <div class="md-title">Add new book</div>
-          </md-card-header>
-
-          <md-card-content>
-
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('title')">
-                <label for="title">Title</label>
-                <md-input name="title" id="first-name" v-model="form.title" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.title.required">The title is required</span>
-              </md-field>
-            </div>
-
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('author')">
-                <md-autocomplete v-model="form.author.name" :md-options="authors" @md-changed="getAuthors" @md-opened="getAuthors">
-                  <label>Author</label>
-                  <template slot="md-autocomplete-item" slot-scope="{ item }">{{ item.name }} {{ item.surname }}</template>
-                </md-autocomplete>
-              </md-field>
-            </div>
-
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('description')">
-                <label for="description">Description</label>
-                <md-textarea name="description" id="description" v-model="form.description" :disabled="sending" />
-                <span class="md-error" v-if="!$v.form.description.required">The description is required</span>
-                <span class="md-error" v-else-if="!$v.form.description.minlength">Invalid description</span>
-              </md-field>
-            </div>
-            
-            <div class="md-layout-item md-small-size-100">
-              <md-field :class="getValidationClass('tags')">
-                <md-chips v-model="form.tags" md-placeholder="Add tags"></md-chips>
-              </md-field>
-            </div>
-          </md-card-content>
-
-          <md-progress-bar md-mode="indeterminate" v-if="sending" />
-
-          <md-card-actions>
-            <md-button type="submit" class="md-primary" :disabled="sending">Create book</md-button>
-          </md-card-actions>
-        </md-card>
-        <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
-      </form>
-    </div>
+    <v-container elevation-3>
+      <v-form v-model="valid">
+        <v-text-field
+          v-model="title"
+          :rules="titleRules"
+          label="Title"
+          required
+        ></v-text-field>
+        <v-text-field
+          v-model="isbn"
+          :rules="isbnRules"
+          label="ISBN"
+          required
+        ></v-text-field>
+        <v-textarea
+          name="input-7-1"
+          label="Description"
+          value=""
+          hint="Short book biography"
+          v-model="description"
+          :rules="descriptionRules"
+        ></v-textarea>
+      </v-form>
+    </v-container>
   </section>
 </template>
 
 <script>
-  import { validationMixin } from 'vuelidate'
-  import {
-    required,
-    minLength,
-  } from 'vuelidate/lib/validators'
-
   export default {
-    mixins: [validationMixin],
     data: () => ({
+      title: '',
+      description: '',
+      isbn: '',
+      year: '',
+      categories: [],
+      titleRules: [
+        v => !!v || 'Title is required',
+      ],
+      descriptionRules: [
+        v => !!v || 'Description is required',
+      ],
+      isbnRules: [
+        v => !!v || 'ISBN is required',
+        v => v.length === 13 || v.length === 10 || 'ISBN must be 10 or 13 characters'
+      ],
       form: {
         title: null,
         name: '',
         lastName: null,
         description: null,
         birthDate: null,
-        author: {
-          name: ''
-        },
+        author: '',
         tags: []
       },
+      searchQuery: null,
       userSaved: false,
       sending: false,
       lastUser: null,
       authors: []
     }),
-    validations: {
-      form: {
-        title: {
-          required,
-        },
-        name: {
-          required
-        },
-        lastName: {
-          required,
-          minLength: minLength(3)
-        },
-        description: {
-          required,
-          minLength: minLength(30)
-        },
-        birthDate: {
-          required,
-        },
-      }
-    },
     methods: {
       getAuthors (searchTerm) {
         this.authors = new Promise((resolve, reject) => {
           this.$store.dispatch('searchAuthor', { query: searchTerm }).then((response) => {
-            resolve(response.data.authors)
+            resolve(response.data.authors);
           });
         });
       },
       getValidationClass (fieldName) {
-        const field = this.$v.form[fieldName]
+        const field = this.$v.form[fieldName];
 
         if (field) {
           return {
@@ -119,23 +78,20 @@
         }
       },
       clearForm () {
-        this.$v.$reset()
-        this.form.firstName = null
-        this.form.lastName = null
+        this.$v.$reset();
+        this.form.firstName = null;
+        this.form.lastName = null;
       },
-      addAuthor (form) {
-        this.sending = true
-        this.$store.dispatch('addAuthor', { form }).then((response) => {
-          this.sending = false;
-          this.$router.push({ path: `/author/details/${response.data.id}` });
+      addBook (form) {
+        this.sending = false;
+        this.$store.dispatch('addBook', { form }).then((response) => {
+          this.$router.push({ path: `/book/details/${response.data.id}` });
         })
       },
       validateUser () {
         this.$v.$touch()
-
-        if (!this.$v.$invalid) {
-          this.addAuthor(this.form)
-        }
+        console.log('validate');
+        this.addBook(this.form);
       }
     }
   };

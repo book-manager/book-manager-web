@@ -1,40 +1,34 @@
 <template>
-  <section class="login-form">
-    <v-container
-      grid-list-md 
-      text-xl-center
-      align-center=true 
-      class="register-box .mx-auto" 
-      elevation-3
-    >
-      <v-layout xs12>
-        <v-form>
-          <v-text-field
-          label="Email"
-          v-model="email"
-          required
-          :rules="emailRules">
-          </v-text-field>
-          <v-text-field
-            label="Password"
-            v-model="password"
+    <v-container xs-6 text-md-center elevation-3>
+     <v-layout align-center justify-center row fill-height>
+       <v-flex>
+          <v-form>
+            <v-text-field
+            label="Email"
+            v-model="email"
             required
-            min="8"
-            type="password"
-            counter
-          ></v-text-field>
-          <v-btn
-            color="primary"
-            flat
-            @click="login"
-            :disabled="!valid"
-          >
-            Login
-          </v-btn>
-        </v-form>
-      </v-layout>
+            :rules="emailRules">
+            </v-text-field>
+            <v-text-field
+              label="Password"
+              v-model="password"
+              required
+              min="8"
+              type="password"
+              counter
+            ></v-text-field>
+            <v-btn
+              color="primary"
+              flat
+              @click="login"
+              :disabled="!valid"
+            >
+              Login
+            </v-btn>
+          </v-form>
+       </v-flex>
+      </v-layout> 
     </v-container>
-  </section>
 </template>
 
 <!-- TODO: Validation -->
