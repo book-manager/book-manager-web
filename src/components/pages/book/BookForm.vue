@@ -22,6 +22,25 @@
           v-model="description"
           :rules="descriptionRules"
         ></v-textarea>
+        <b-autocomplete
+            v-model="name"
+            :data="authors"
+            placeholder="e.g. Fight Club"
+            field="full_name"
+            :loading="isFetching"
+            @input="getAsyncData"
+            @select="option => selected = option">
+
+            <template slot-scope="props">
+                {{ props.option.name }} {{ props.option.surname }}
+            </template>
+        </b-autocomplete>
+        <v-btn
+              color="primary"
+              @click="addBook"
+            >
+              Add
+            </v-btn>
       </v-form>
     </v-container>
   </section>
@@ -30,11 +49,13 @@
 <script>
   export default {
     data: () => ({
+      name: '',
+      selected: null,
+      isFetching: false,
       title: '',
       description: '',
       isbn: '',
-      year: '',
-      categories: [],
+      valid: false,
       titleRules: [
         v => !!v || 'Title is required',
       ],
@@ -45,67 +66,25 @@
         v => !!v || 'ISBN is required',
         v => v.length === 13 || v.length === 10 || 'ISBN must be 10 or 13 characters'
       ],
-      form: {
-        title: null,
-        name: '',
-        lastName: null,
-        description: null,
-        birthDate: null,
-        author: '',
-        tags: []
-      },
-      searchQuery: null,
-      userSaved: false,
-      sending: false,
-      lastUser: null,
-      authors: []
+      authors: [],
     }),
     methods: {
-      getAuthors (searchTerm) {
-        this.authors = new Promise((resolve, reject) => {
-          this.$store.dispatch('searchAuthor', { query: searchTerm }).then((response) => {
-            resolve(response.data.authors);
-          });
+      getAsyncData () {
+        this.authors = [];
+        this.isFetching = true;
+        this.$store.dispatch('searchAuthor', { query: this.name }).then((response) => {
+          this.authors = response.data.authors;
         });
       },
-      getValidationClass (fieldName) {
-        const field = this.$v.form[fieldName];
-
-        if (field) {
-          return {
-            'md-invalid': field.$invalid && field.$dirty
-          }
-        }
-      },
-      clearForm () {
-        this.$v.$reset();
-        this.form.firstName = null;
-        this.form.lastName = null;
-      },
-      addBook (form) {
-        this.sending = false;
-        this.$store.dispatch('addBook', { form }).then((response) => {
-          this.$router.push({ path: `/book/details/${response.data.id}` });
+      addBook () {
+        this.$store.dispatch('addBook', { title: this.title, description: this.description, author_id: this.selected.id, isbn: this.isbn }).then((response) => {
+          console.log(response.data);
+          this.$router.push({ path: `/book/details/${response.data.data.id}` });
         })
-      },
-      validateUser () {
-        this.$v.$touch()
-        console.log('validate');
-        this.addBook(this.form);
       }
     }
   };
 </script>
 
 <style scoped>
-  .md-progress-bar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-  }
-
-  .author-form {
-    margin: 0 auto;
-  }
 </style>
