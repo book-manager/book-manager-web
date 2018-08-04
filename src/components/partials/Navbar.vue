@@ -1,20 +1,25 @@
 <template>
   <v-toolbar v-if="isLogged">
-    <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
     <v-toolbar-title>Booker</v-toolbar-title>
     <v-spacer></v-spacer>
+    <v-badge left v-if="pending_friendship">
+      <span slot="badge">{{ pending_friendship.length }}</span>
+      <router-link to="/friends/requests">
+      <span>Friends requests</span>
+      </router-link>
+    </v-badge>
     <v-toolbar-items class="hidden-sm-and-down">
       <v-menu offset-y>
         <v-btn flat slot="activator">Authors</v-btn>
         <v-list>
           <v-list-tile>
-            <v-list-tile-title><router-link to="friends">My authors</router-link></v-list-tile-title>
+            <v-list-tile-title><router-link to="/author">My authors</router-link></v-list-tile-title>
           </v-list-tile>
           <v-list-tile>
-            <v-list-title-title><router-link to="/author/search">Search</router-link></v-list-title-title>
+            <v-list-tile-title><router-link to="/author/search">Search</router-link></v-list-tile-title>
           </v-list-tile>
           <v-list-tile>
-            <v-list-title-title><router-link to="/author/new">Add</router-link></v-list-title-title>
+            <v-list-tile-title><router-link to="/author/new">Add</router-link></v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu> 
@@ -25,10 +30,10 @@
             <v-list-tile-title><router-link to="/books">My books</router-link></v-list-tile-title>
           </v-list-tile>
           <v-list-tile>
-            <v-list-title-title><router-link to="/books/search">Search</router-link></v-list-title-title>
+            <v-list-tile-title><router-link to="/books/search">Search</router-link></v-list-tile-title>
           </v-list-tile>
           <v-list-tile>
-            <v-list-title-title><router-link to="/books/new">Add</router-link></v-list-title-title>
+            <v-list-tile-title><router-link to="/books/new">Add</router-link></v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>  
@@ -36,10 +41,14 @@
         <v-btn flat slot="activator">Friends</v-btn>
         <v-list>
           <v-list-tile>
-            <v-list-tile-title><router-link to="friends">Friends</router-link></v-list-tile-title>
+            <v-list-tile-title>
+              <router-link to="/friends">
+              Friends
+              </router-link>
+            </v-list-tile-title>
           </v-list-tile>
           <v-list-tile>
-            <v-list-title-title><router-link to="friends/search">Search</router-link></v-list-title-title>
+            <v-list-tile-title><router-link to="/friends/search">Search</router-link></v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu> 
@@ -49,9 +58,8 @@
           <v-list-tile>
             <v-list-tile-title>Profile</v-list-tile-title>
           </v-list-tile>
-
           <v-list-tile>
-            <v-list-title-title><p @click="logout">Logout</p></v-list-title-title>
+            <v-list-tile-title><p @click="logout">Logout</p></v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
@@ -72,7 +80,15 @@
   import { mapGetters } from 'vuex';
 
   export default {
-    computed: mapGetters(['isLogged', 'user']),
+    data () {
+      return {
+        pending_requests: null
+      }
+    },
+    computed: mapGetters(['isLogged', 'user', 'pending_friendship']),
+    created () {
+      this.$store.dispatch('checkPendingFriendships');
+    },
     methods: {
       logout () {
         this.$store.dispatch('logout');
@@ -89,7 +105,7 @@
 </script>
 
 <style scoped>
-  .navbar {
+  /* .navbar {
     display: flex;
     justify-content: space-between;
   }
@@ -97,6 +113,5 @@
   .navbar-not-logged {
     display: flex;
     justify-content: flex-end;
-  }
-
+  } */
 </style>

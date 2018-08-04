@@ -11,13 +11,23 @@
               <p v-if="is_friend">
                 <v-chip color="green">Friend</v-chip>
               </p>
-                 <v-btn v-else
-                  color="primary"
-                  :loading="false"
-                  @click.native="addFriend"
-                >
-                  Add 
-                </v-btn>
+              <p v-if="pending">
+                <v-chip color="yellow">Pending</v-chip>
+              </p>
+              <v-btn v-if="!is_friend"
+                color="primary"
+                :loading="false"
+                @click="addFriend"
+              >
+                Add 
+              </v-btn>
+              <v-btn v-if="incoming"
+                color="green"
+                :loading="false"
+                @click="addFriend"
+              >
+                Accept
+              </v-btn>
             </v-flex>
             <v-flex xl12>
               <p>Member from: {{ user.created_at }}</p>
@@ -35,7 +45,9 @@ export default {
       loading: false,
       error: false,
       user: {},
-      is_friend: false
+      is_friend: false,
+      pending: false,
+      incoming: false
     };
   },
   created () {
@@ -43,8 +55,21 @@ export default {
     this.$store.dispatch('getUserDetails', { id: this.$route.params.id }).then((response) => {
       this.user = response;
       this.$store.dispatch('checkUserFriendship', { friendId: this.$route.params.id }).then((response) => {
-        if (response.data.is_friend === true) {
-          this.is_friend = true;
+        switch (response.data.friendship) {
+          case true:
+            this.is_friend = true;
+            break;
+          case false:
+            this.is_friend = false;
+            break;
+          case 'pending':
+            this.pending = true;
+            break;
+          case 'initiated':
+            this.incoming = true;
+            break;
+          default:
+            break;
         }
       });
     }).catch((error) => {
