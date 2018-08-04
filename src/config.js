@@ -4,7 +4,15 @@ export default {
     LOGIN: root + 'login',
     REGISTER: root + 'register',
     FRIENDSHIP: {
-      PENDING: root + 'api/friendship/pending'
+      PENDING: root + 'api/friendship/pending',
+      ADD: root + 'api/friendship'
+    },
+    FRIENDS: {
+      FETCH: root + 'api/friends/',
+      SEARCH: root + 'api/friends/search',
+    },
+    AUTHORS: {
+      ROOT: root + 'api/authors',
     }
   }
 };

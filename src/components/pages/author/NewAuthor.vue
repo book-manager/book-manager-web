@@ -1,6 +1,13 @@
 <template>
   <section>
+
     <v-container elevation-3>
+      <v-alert
+        :value="error"
+        type="error"
+      >
+        {{ errorMessage }}
+      </v-alert>
       <v-form v-model="valid">
         <v-text-field
           v-model="name"
@@ -37,6 +44,8 @@
 <script>
   export default {
     data: () => ({
+      error: false,
+      errorMessage: '',
       valid: false,
       name: '',
       surname: '',
@@ -52,17 +61,15 @@
       ]
     }),
     methods: {
-      // clearForm () {
-      //   this.$v.$reset()
-      //   this.form.firstName = null
-      //   this.form.lastName = null
-      // },
       addAuthor (form) {
         this.sending = true
         this.$store.dispatch('addAuthor', { name: this.name, surname: this.surname, description: this.surname }).then((response) => {
           console.log(response);
           this.sending = false;
           this.$router.push({ path: `/author/details/${response.data.id}` });
+        }).catch((error) => {
+          this.error = true;
+          this.errorMessage = error;
         })
       }
     }

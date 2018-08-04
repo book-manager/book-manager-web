@@ -1,4 +1,6 @@
 import axios from 'axios';
+import config from '../../config';
+
 import {
   FETCH_AUTHORS
 } from '../mutation-types';
@@ -14,51 +16,59 @@ const getters = {
 const actions = {
   fetchAuthors (store) {
     return new Promise((resolve, reject) => {
-      axios.get('http://localhost:3000/author', {
+      axios.get(config.API.AUTHORS.ROOT, {
         headers: {
-          'Authorization': `Bearer: ${store.getters.token}`
+          Authorization: `Bearer: ${store.getters.token}`
         }
       }).then((response) => {
-        console.log(response);
-        store.commit(FETCH_AUTHORS, { authors: response.data });
+        console.log(response.data.data);
+        store.commit(FETCH_AUTHORS, {authors: response.data.data.authors});
       });
     });
   },
-  addAuthor (store, { name, surname, description }) {
+  addAuthor (store, {name, surname, description}) {
     return new Promise((resolve, reject) => {
-      axios.post('http://localhost:4100/api/author', {
+      axios.post(config.API.AUTHORS.ROOT, {
         author: {
-          name: name,
-          surname: surname,
-          description: description,
+          name,
+          surname,
+          description
         }
       }, {
         headers: {
-          'Authorization': `Bearer: ${store.getters.token}`
+          Authorization: `Bearer: ${store.getters.token}`
         }
-      }).then((response) => {
+      }).then(response => {
         resolve(response.data);
+      }).catch(error => {
+        switch (error.response.status) {
+          case 422:
+            reject(error.response.data.errors);
+            break;
+          default:
+            break;
+        }
       });
     });
   },
-  fetchAuthorDetails (store, { id }) {
+  fetchAuthorDetails (store, {id}) {
     return new Promise((resolve, reject) => {
       axios.get(`http://localhost:4100/api/author/${id}`, {
         headers: {
-          'Authorization': `Bearer: ${store.getters.token}`
+          Authorization: `Bearer: ${store.getters.token}`
         }
-      }).then((response) => {
+      }).then(response => {
         resolve(response.data);
       });
     });
   },
-  searchAuthor (store, { query }) {
+  searchAuthor (store, {query}) {
     return new Promise((resolve, reject) => {
       axios.get(`http://localhost:4100/api/author/search?query=${query}`, {
         headers: {
-          'Authorization': `Bearer: ${store.getters.token}`
+          Authorization: `Bearer: ${store.getters.token}`
         }
-      }).then((response) => {
+      }).then(response => {
         resolve(response.data);
       });
     });
@@ -66,10 +76,10 @@ const actions = {
 };
 
 const mutations = {
-  [FETCH_AUTHORS] (store, { authors }) {
+  [FETCH_AUTHORS] (store, {authors}) {
     store.authors = authors;
   }
-}
+};
 export default {
   state,
   getters,

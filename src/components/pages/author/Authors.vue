@@ -1,20 +1,18 @@
 <template>
-  <section>
-    <el-table
-        :data="authors"
-        style="width: 100%">
-        <el-table-column
-          prop="name"
-          label="Name"
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="surname"
-          label="Surname">
-        </el-table-column>
-      </el-table>
-    <el-button type="primary" plain @click="addAuthor">Primary</el-button>
-  </section>
+<v-container fluid>
+   <v-layout row elevation-5>
+     <v-list one-line>
+       <template v-for="author in authors">
+        <v-list-tile avatar :key="author.id" @click="viewProfile(author.id)">
+          <v-list-tile-content>
+            <v-list-tile-title>{{ author.name }} {{ author.surname }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider></v-divider>
+       </template>
+     </v-list>
+   </v-layout>
+ </v-container> 
 </template>
 
 <script>
