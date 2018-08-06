@@ -21,8 +21,7 @@ const actions = {
           Authorization: `Bearer: ${store.getters.token}`
         }
       }).then((response) => {
-        console.log(response.data.data);
-        store.commit(FETCH_AUTHORS, {authors: response.data.data.authors});
+        store.commit(FETCH_AUTHORS, {authors: response.data.data});
       });
     });
   },
@@ -53,7 +52,7 @@ const actions = {
   },
   fetchAuthorDetails (store, {id}) {
     return new Promise((resolve, reject) => {
-      axios.get(`http://localhost:4100/api/author/${id}`, {
+      axios.get(`${config.API.AUTHORS.ROOT}/${id}`, {
         headers: {
           Authorization: `Bearer: ${store.getters.token}`
         }

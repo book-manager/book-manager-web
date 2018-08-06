@@ -1,14 +1,16 @@
 <template>
 <v-container fluid>
    <v-layout row elevation-5>
-     <v-list one-line>
+     <v-list one-line class="lista">
        <template v-for="author in authors">
         <v-list-tile avatar :key="author.id" @click="viewProfile(author.id)">
+           <v-list-tile-avatar>
+            <img :src="author.avatar_url">
+          </v-list-tile-avatar>
           <v-list-tile-content>
             <v-list-tile-title>{{ author.name }} {{ author.surname }}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-divider></v-divider>
        </template>
      </v-list>
    </v-layout>
@@ -22,8 +24,8 @@ export default {
     };
   },
   methods: {
-    addAuthor () {
-      this.$router.push({name: 'authorNew'});
+    viewProfile (id) {
+      this.$router.push({ path: `/author/${id}` });
     }
   },
   created () {
@@ -37,6 +39,8 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style>
+  .lista {
+    width: 100%;
+  }
 </style>

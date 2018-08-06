@@ -1,22 +1,22 @@
 <template>
-   <div class="md-layout md-gutter author-info md-elevation-10">
-    <div class="md-layout-item md-alignment-center-center">
-      <div class="author-avatar">
-        <img :src="author.avatar_url" alt="">
-      </div>
-      <div>
-        <p class="author-name">{{ author.name }} {{ author.surname }}</p>
-      </div>
-      <div class="description">
-        <div class="author-description">
+  <v-container grid-list-md text-xs-center elevation-5>
+    <v-layout row wrap>
+      <v-flex xs6>
+        <div>
+          <img :src="author.avatar_url" alt="author avatar">
+        </div>
+        <div>
+          <p class="author-name">{{ author.name }} {{ author.surname }}</p>
+        </div>
+        <div>
           <p>{{ author.description }}</p>
         </div>
-      </div>
-    </div>
-    <div class="md-layout-item books">
+      </v-flex>
+      <v-flex xs6>
 
-    </div>
-  </div> 
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -29,7 +29,6 @@ export default {
   created () {
     this.loading = true;
     this.$store.dispatch('fetchAuthorDetails', { id: this.$route.params.id }).then((response) => {
-      console.log(response);
       this.author = response.data;
     })
   }
@@ -38,28 +37,8 @@ export default {
 
 
 <style scoped>
-  .author-info {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-align: center;
-    padding-top: 7em; 
-  }
-
-  .author-avatar {
-    padding-top: 1em;
-  }
-
   .author-name {
     font-weight: bold;
     font-size: 2em;
-  }
-
-  .description {
-    display: flex;
-    justify-content: center;
-  }
-
-  .author-description {
-    max-width: 60%;
-    font-size: 1.3em;
   }
 </style>
