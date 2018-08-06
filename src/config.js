@@ -13,6 +13,9 @@ export default {
     },
     AUTHORS: {
       ROOT: root + 'api/authors',
+      SEARCH: root + 'api/authors/search',
+      OWNED: root + 'api/authors/owned',
+      OWNERSHIP: root + '/api/authors/ownership'
     }
   }
 };

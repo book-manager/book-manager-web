@@ -63,12 +63,38 @@ const actions = {
   },
   searchAuthor (store, {query}) {
     return new Promise((resolve, reject) => {
-      axios.get(`http://localhost:4100/api/author/search?query=${query}`, {
+      axios.get(`${config.API.AUTHORS.SEARCH}/${query}`, {
         headers: {
           Authorization: `Bearer: ${store.getters.token}`
         }
       }).then(response => {
-        resolve(response.data);
+        resolve(response.data.data);
+      });
+    });
+  },
+  checkOwned (store, { id }) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${config.API.AUTHORS.OWNED}/${id}`, {
+        headers: {
+          Authorization: `Bearer: ${store.getters.token}`
+        }
+      }).then(response => {
+        resolve(response.data.owned);
+      });
+    });
+  },
+  createOwnership (store, { author_id }) {
+    return new Promise((resolve, reject) => {
+      axios.post(config.API.AUTHORS.OWNERSHIP, {
+        author_id: author_id
+      }, {
+        headers: {
+          Authorization: `Bearer: ${store.getters.token}`
+        }
+      }).then(response => {
+        resolve(response);
+      }).catch(error => {
+        reject(error);
       });
     });
   }

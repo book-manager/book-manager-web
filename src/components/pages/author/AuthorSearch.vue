@@ -38,19 +38,19 @@ export default {
     return {
       query: '',
       authors: []
-    }
+    };
   },
   methods: {
     search () {
       this.$store.dispatch('searchAuthor', { query: this.query }).then((response) => {
-        this.authors = response.data.authors;
+        this.authors = response;
       });
     },
     showDetails (id) {
-      this.$router.push({ path: `/author/details/${id}` });
+      this.$router.push({ path: `/author/${id}` });
     }
   }
-}
+};
 </script>
 
 <style>

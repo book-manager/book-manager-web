@@ -12,11 +12,12 @@ import AuthorForm from '@/components/pages/author/NewAuthor';
 import AuthorDetails from '@/components/pages/author/AuthorDetails';
 import AuthorSearch from '@/components/pages/author/AuthorSearch';
 
-// import Books from '@/components/pages/book/Books';
+// Import Books from '@/components/pages/book/Books';
 import BooksForm from '@/components/pages/book/BookForm';
 
 import FriendsSearch from '@/components/pages/friend/FriendsSearch';
 import FriendsList from '@/components/pages/friend/FriendsList';
+import FriendsRequests from '@/components/pages/friend/FriendsRequests';
 
 import UserProfile from '@/components/pages/user/UserProfile';
 
@@ -29,13 +30,13 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: Home,
-      meta: { auth: true }
+      meta: {auth: true}
     },
     {
       path: '/profile',
       name: 'profile',
       component: Profile,
-      meta: { auth: true },
+      meta: {auth: true}
     },
     {
       path: '/author',
@@ -44,27 +45,28 @@ const router = new Router({
       meta: {auth: true}
     },
     {
-      path: '/author/details/:id',
-      name: 'authorNew',
-      component: AuthorDetails,
-      meta: { auth: true }
-    },
-    {
       path: '/author/search',
       name: 'AuthorSearch',
       component: AuthorSearch,
-      meta: { auth: true }
+      meta: {auth: true}
     },
+    {
+      path: '/author/:id',
+      name: 'authorNew',
+      component: AuthorDetails,
+      meta: {auth: true}
+    },
+
     {
       path: '/author/new',
       name: 'authorNew',
       component: AuthorForm,
-      meta: { auth: true, admin_only: true }
+      meta: {auth: true, admin_only: true}
     },
     {
       path: '/welcome',
       name: 'welcome',
-      component: Welcome,
+      component: Welcome
     },
     {
       path: '/login',
@@ -80,48 +82,52 @@ const router = new Router({
       path: '/friends/search',
       name: 'FriendsSearch',
       component: FriendsSearch,
+      meta: {auth: true}
+    },
+    {
+      path: '/friends/requests',
+      name: 'FriendsRequests',
+      component: FriendsRequests,
       meta: { auth: true }
     },
     {
       path: '/friends',
       name: 'FriendList',
       component: FriendsList,
-      meta: { auth: true }
+      meta: {auth: true}
     },
     {
       path: '/user/:id',
       name: 'UserProfile',
       component: UserProfile,
-      meta: { auth: true }
+      meta: {auth: true}
     },
     {
       path: '/books/new',
       name: 'booksNew',
       component: BooksForm,
-      meta: { auth: true }
-    },
+      meta: {auth: true}
+    }
   ]
 });
 
 router.beforeEach((to, from, next) => {
   if (to.meta.auth) {
     if (!store.getters.isLogged) {
-      console.log('Not logged route')
+      console.log('Not logged route');
       next({
-        path: '/welcome',
+        path: '/welcome'
       });
-    } else {
-      if (to.meta.admin_only) {
-        if (store.getters.is_admin) {
-          next();
-        } else {
-          next({
-            path: '/'
-          });
-        }
-      } else {
+    } else if (to.meta.admin_only) {
+      if (store.getters.is_admin) {
         next();
+      } else {
+        next({
+          path: '/'
+        });
       }
+    } else {
+      next();
     }
   } else {
     next();
