@@ -16,6 +16,9 @@ export default {
       SEARCH: root + 'api/authors/search',
       OWNED: root + 'api/authors/owned',
       OWNERSHIP: root + '/api/authors/ownership'
+    },
+    BOOKS: {
+      ROOT: root + 'api/books'
     }
   }
 };

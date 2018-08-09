@@ -10,12 +10,7 @@ import './main.scss';
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 
-import Buefy from 'buefy'
-import 'buefy/lib/buefy.css'
-
 Vue.use(Vuetify);
-
-Vue.component(Buefy.Autocomplete.name, Buefy.Autocomplete);
 
 Vue.config.productionTip = false;
 

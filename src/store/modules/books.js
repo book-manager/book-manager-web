@@ -1,4 +1,5 @@
 import axios from 'axios';
+import config from '../../config';
 
 const state = {
 };
@@ -7,29 +8,28 @@ const getters = {
 };
 
 const actions = {
-  addBook (store, { title, isbn, description, author_id }) {
+  addBook (store, {title, isbn, description, author_id}) {
     return new Promise((resolve, reject) => {
-      axios.post('http://localhost:4100/api/book', {
+      axios.post(config.API.BOOKS.ROOT, {
         book: {
-          title: title,
-          isbn: isbn,
-          description: description,
-          author_id: author_id
+          title,
+          isbn,
+          description,
+          author_id
         }
       }, {
         headers: {
-          'Authorization': `Bearer: ${store.getters.token}`
+          Authorization: `Bearer: ${store.getters.token}`
         }
-      }).then((response) => {
-        console.log(response);
+      }).then(response => {
         resolve(response);
-      })
+      });
     });
   }
 };
 
 const mutations = {
-}
+};
 
 export default {
   state,

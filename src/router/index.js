@@ -12,8 +12,8 @@ import AuthorForm from '@/components/pages/author/NewAuthor';
 import AuthorDetails from '@/components/pages/author/AuthorDetails';
 import AuthorSearch from '@/components/pages/author/AuthorSearch';
 
-// Import Books from '@/components/pages/book/Books';
 import BooksForm from '@/components/pages/book/BookForm';
+import BooksDetails from '@/components/pages/book/BookDetails';
 
 import FriendsSearch from '@/components/pages/friend/FriendsSearch';
 import FriendsList from '@/components/pages/friend/FriendsList';
@@ -23,98 +23,120 @@ import UserProfile from '@/components/pages/user/UserProfile';
 
 Vue.use(Router);
 
+const mainRoutes = [
+  {
+    path: '/',
+    name: 'home',
+    component: Home,
+    meta: {auth: true}
+  },
+  {
+    path: '/welcome',
+    name: 'welcome',
+    component: Welcome
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+];
+
+const authorRoutes = [
+  {
+    path: '/author',
+    name: 'authors',
+    component: Authors,
+    meta: {auth: true}
+  },
+  {
+    path: '/author/search',
+    name: 'AuthorSearch',
+    component: AuthorSearch,
+    meta: {auth: true}
+  },
+  {
+    path: '/author/new',
+    name: 'authorNew',
+    component: AuthorForm,
+    meta: {auth: true}
+  },
+  {
+    path: '/author/:id',
+    name: 'authorDetails',
+    component: AuthorDetails,
+    meta: {auth: true}
+  }
+];
+
+const friendsRoutes = [
+  {
+    path: '/friends/search',
+    name: 'FriendsSearch',
+    component: FriendsSearch,
+    meta: {auth: true}
+  },
+  {
+    path: '/friends/requests',
+    name: 'FriendsRequests',
+    component: FriendsRequests,
+    meta: { auth: true }
+  },
+  {
+    path: '/friends',
+    name: 'FriendList',
+    component: FriendsList,
+    meta: {auth: true}
+  }
+];
+
+const userRoutes = [
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile,
+    meta: {auth: true}
+  },
+  {
+    path: '/user/:id',
+    name: 'UserProfile',
+    component: UserProfile,
+    meta: {auth: true}
+  }
+];
+
+const booksRoutes = [
+  {
+    path: '/books',
+    name: 'books',
+    component: BooksDetails,
+    meta: {auth: true}
+  },
+  {
+    path: '/books/new',
+    name: 'booksNew',
+    component: BooksForm,
+    meta: {auth: true}
+  }
+];
+
+function createsRoutes () {
+  return [...mainRoutes, ...userRoutes, ...authorRoutes, ...friendsRoutes, ...booksRoutes];
+}
+
 const router = new Router({
   linkActiveClass: 'is-active',
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home,
-      meta: {auth: true}
-    },
-    {
-      path: '/profile',
-      name: 'profile',
-      component: Profile,
-      meta: {auth: true}
-    },
-    {
-      path: '/author',
-      name: 'authors',
-      component: Authors,
-      meta: {auth: true}
-    },
-    {
-      path: '/author/search',
-      name: 'AuthorSearch',
-      component: AuthorSearch,
-      meta: {auth: true}
-    },
-    {
-      path: '/author/:id',
-      name: 'authorNew',
-      component: AuthorDetails,
-      meta: {auth: true}
-    },
-
-    {
-      path: '/author/new',
-      name: 'authorNew',
-      component: AuthorForm,
-      meta: {auth: true, admin_only: true}
-    },
-    {
-      path: '/welcome',
-      name: 'welcome',
-      component: Welcome
-    },
-    {
-      path: '/login',
-      name: 'Login',
-      component: Login
-    },
-    {
-      path: '/register',
-      name: 'Register',
-      component: Register
-    },
-    {
-      path: '/friends/search',
-      name: 'FriendsSearch',
-      component: FriendsSearch,
-      meta: {auth: true}
-    },
-    {
-      path: '/friends/requests',
-      name: 'FriendsRequests',
-      component: FriendsRequests,
-      meta: { auth: true }
-    },
-    {
-      path: '/friends',
-      name: 'FriendList',
-      component: FriendsList,
-      meta: {auth: true}
-    },
-    {
-      path: '/user/:id',
-      name: 'UserProfile',
-      component: UserProfile,
-      meta: {auth: true}
-    },
-    {
-      path: '/books/new',
-      name: 'booksNew',
-      component: BooksForm,
-      meta: {auth: true}
-    }
-  ]
+  routes: createsRoutes()
 });
 
 router.beforeEach((to, from, next) => {
   if (to.meta.auth) {
     if (!store.getters.isLogged) {
-      console.log('Not logged route');
       next({
         path: '/welcome'
       });
