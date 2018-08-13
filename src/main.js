@@ -10,6 +10,10 @@ import './main.scss';
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 
+import ImgInputer from 'vue-img-inputer';
+import 'vue-img-inputer/dist/index.css';
+
+Vue.component('ImgInputer', ImgInputer);
 Vue.use(Vuetify);
 
 Vue.config.productionTip = false;

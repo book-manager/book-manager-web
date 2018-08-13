@@ -41,6 +41,11 @@
             {{ item.name }} {{ item.surname }} 
           </template>
         </v-autocomplete>
+        <!-- <v-container class="file-upload">
+          <upload-btn :title="buttonName" :fileChangedCallback="f => handleFile(f)"></upload-btn>
+          {{ fileName }}
+        </v-container> -->
+        <img-inputer id="file" v-model="file" theme="light" size="medium" no-mask ref="img"/>
         <v-btn
               color="primary"
               @click="addBook"
@@ -54,8 +59,12 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import UploadButton from 'vuetify-upload-button';
 
   export default {
+    components: {
+      'upload-btn': UploadButton
+    },
     data () {
       return {
         title: '',
@@ -72,7 +81,10 @@
           v => !!v || 'ISBN is required',
           v => v.length === 13 || v.length === 10 || 'ISBN must be 10 or 13 characters'
         ],
-        author: null
+        author: null,
+        fileName: '',
+        buttonName: 'Upload cover photo',
+        file: null
       };
     },
     created () {
@@ -80,14 +92,18 @@
     },
     methods: {
       addBook () {
-        this.$store.dispatch('addBook', { title: this.title, description: this.description, author_id: this.author.id, isbn: this.isbn }).then((response) => {
+        this.$store.dispatch('addBook', { title: this.title, description: this.description, author_id: this.author.id, isbn: this.isbn, imgData: this.$refs.img.dataUrl, imageName: this.file.name }).then((response) => {
           this.$router.push({ path: `/book/details/${response.data.data.id}` });
         });
-      }
+      },
     },
     computed: mapGetters(['authors']),
   };
 </script>
 
 <style scoped>
+  .file-upload {
+    display: flex;
+    align-items: center;
+  }
 </style>

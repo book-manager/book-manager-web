@@ -112,15 +112,15 @@ const userRoutes = [
 
 const booksRoutes = [
   {
-    path: '/books',
-    name: 'books',
-    component: BooksDetails,
-    meta: {auth: true}
-  },
-  {
     path: '/books/new',
     name: 'booksNew',
     component: BooksForm,
+    meta: {auth: true}
+  },
+  {
+    path: '/books/:id',
+    name: 'books',
+    component: BooksDetails,
     meta: {auth: true}
   }
 ];
