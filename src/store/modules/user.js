@@ -1,6 +1,8 @@
-// asd
 import axios from 'axios';
 import config from '../../config';
+
+import Api from '@/http/axios';
+
 import {
   USER_LOGOUT,
   USER_AUTH_SUCCESS,
@@ -76,6 +78,16 @@ const actions = {
       });
     });
   },
+  // checkUserFriendship (store, { friendId }) {
+  //   return new Promise((resolve, reject) => {
+  //     // TODO: Refactor to get
+  //     Api(store.getters.token).post('/api/friendship/check-friendship', {
+  //       friend_id: friendId
+  //     }).then(response => {
+  //       resolve(response);
+  //     });
+  //   });
+  // },
   checkUserFriendship (store, { friendId }) {
     return new Promise((resolve, reject) => {
       axios.post(`http://localhost:4000/api/friendship/check-friendship`, {
@@ -91,13 +103,11 @@ const actions = {
   },
   checkPendingFriendships (store) {
     return new Promise((resolve, reject) => {
-      axios.get(config.API.FRIENDSHIP.PENDING, {
-        headers: {
-          Authorization: `Bearer ${store.getters.token}`
-        }
-      }).then((response) => {
+      Api(store.getters.token, store).get(config.API.FRIENDSHIP.PENDING).then(response => {
         store.commit(USER_PENDING_FRIENDSHIP, { pendingFriendship: response.data.data });
         resolve(response);
+      }).catch(error => {
+        reject(error);
       });
     });
   }

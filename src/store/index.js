@@ -15,5 +15,5 @@ export default new Vuex.Store({
     author,
     friends,
     books
-  },
+  }
 });

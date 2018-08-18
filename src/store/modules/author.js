@@ -1,6 +1,8 @@
 import axios from 'axios';
 import config from '../../config';
 
+import Api from '@/http/axios';
+
 import {
   FETCH_AUTHORS
 } from '../mutation-types';
@@ -16,12 +18,10 @@ const getters = {
 const actions = {
   fetchAuthors (store) {
     return new Promise((resolve, reject) => {
-      axios.get(config.API.AUTHORS.ROOT, {
-        headers: {
-          Authorization: `Bearer: ${store.getters.token}`
-        }
-      }).then((response) => {
+      Api(store.getters.token, store).get(config.API.AUTHORS.ROOT).then(response => {
         store.commit(FETCH_AUTHORS, {authors: response.data.data});
+      }).catch(error => {
+        reject(error);
       });
     });
   },
