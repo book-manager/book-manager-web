@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-export default (token, store) => {
+export default (store) => {
   let instance = axios.create({
     baseURL: 'http://localhost:4000/',
     headers: {
-      Authorization: `Bearer: ${token}`
+      Authorization: `Bearer: ${store.getters.token}`
     }
   });
 

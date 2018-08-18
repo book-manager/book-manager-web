@@ -13,6 +13,8 @@ export default {
     },
     AUTHORS: {
       ROOT: 'api/authors',
+      BOOKS: 'api/authors/books',
+      BOOKSAUTHOR: 'api/authors/owned/books',
       SEARCH: root + 'api/authors/search',
       OWNED: root + 'api/authors/owned',
       OWNERSHIP: root + '/api/authors/ownership'

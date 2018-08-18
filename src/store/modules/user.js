@@ -103,7 +103,7 @@ const actions = {
   },
   checkPendingFriendships (store) {
     return new Promise((resolve, reject) => {
-      Api(store.getters.token, store).get(config.API.FRIENDSHIP.PENDING).then(response => {
+      Api(store).get(config.API.FRIENDSHIP.PENDING).then(response => {
         store.commit(USER_PENDING_FRIENDSHIP, { pendingFriendship: response.data.data });
         resolve(response);
       }).catch(error => {

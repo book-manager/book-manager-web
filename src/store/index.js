@@ -5,6 +5,7 @@ import user from './modules/user';
 import author from './modules/author';
 import books from './modules/books';
 import friends from './modules/friends';
+import global from './modules/global';
 
 Vue.use(Vuex);
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     user,
     author,
     friends,
-    books
+    books,
+    global
   }
 });
