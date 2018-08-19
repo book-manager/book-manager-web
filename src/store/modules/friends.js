@@ -1,39 +1,41 @@
-import axios from 'axios';
+import Api from '@/http/axios';
 
 import config from '../../config';
-import { SEARCH_USERS } from '../mutation-types';
+import {
+  SEARCH_USERS,
+  FRIENDS_BOOKS
+} from '../mutation-types';
 
 const state = {
-  foundUsers: []
+  foundUsers: [],
+  friendsBook: []
 };
 
 const getters = {
-  foundUsers: state => state.foundUsers
+  foundUsers: state => state.foundUsers,
+  friendsBook: state => state.friendsBook
 };
 
 const actions = {
-  searchUsers (store, { query }) {
+  searchUsers (store, {
+    query
+  }) {
     return new Promise((resolve, reject) => {
-      axios.post(config.API.FRIENDS.SEARCH, {
+      Api(store).post(config.API.FRIENDS.SEARCH, {
         query
-      }, {
-        headers: {
-          Authorization: `Bearer ${store.getters.token}`
-        }
       }).then(response => {
-        console.log(response.data.data);
-        store.commit(SEARCH_USERS, {users: response.data.data});
+        store.commit(SEARCH_USERS, {
+          users: response.data.data
+        });
       });
     });
   },
-  addFriend (store, { id }) {
+  addFriend (store, {
+    id
+  }) {
     return new Promise((resolve, reject) => {
-      axios.post(config.API.FRIENDSHIP.ADD, {
-        friend_id: id,
-      }, {
-        headers: {
-          Authorization: `Bearer ${store.getters.token}`
-        }
+      Api(store).post(config.API.FRIENDSHIP.ADD, {
+        friend_id: id
       }).then(response => {
         console.log(response);
       });
@@ -41,20 +43,35 @@ const actions = {
   },
   fetchFriends (store) {
     return new Promise((resolve, reject) => {
-      axios.get(config.API.FRIENDS.FETCH, {
-        headers: {
-          Authorization: `Bearer ${store.getters.token}`
-        }
-      }).then(response => {
+      Api(store).get(config.API.FRIENDS.FETCH).then(response => {
         resolve(response.data.data);
+      });
+    });
+  },
+  showFriendsBooks (store, {
+    bookID
+  }) {
+    return new Promise((resolve, reject) => {
+      console.log(bookID);
+      Api(store).get(`${config.API.FRIENDS.BOOKS}/${bookID}`).then(response => {
+        store.commit(FRIENDS_BOOKS, {
+          friends: response.data.data
+        });
       });
     });
   }
 };
 
 const mutations = {
-  [SEARCH_USERS] (store, {users}) {
+  [SEARCH_USERS] (store, {
+    users
+  }) {
     store.foundUsers = users;
+  },
+  [FRIENDS_BOOKS] (store, {
+    friends
+  }) {
+    store.friendsBook = friends;
   }
 };
 

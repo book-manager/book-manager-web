@@ -13,6 +13,12 @@ import 'vuetify/dist/vuetify.min.css';
 import ImgInputer from 'vue-img-inputer';
 import 'vue-img-inputer/dist/index.css';
 
+import VueElementLoading from 'vue-element-loading';
+
+import VueStars from 'vue-stars';
+Vue.component('vue-stars', VueStars);
+Vue.component('VueElementLoading', VueElementLoading);
+
 Vue.component('ImgInputer', ImgInputer);
 Vue.use(Vuetify);
 

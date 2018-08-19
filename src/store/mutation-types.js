@@ -8,13 +8,15 @@ export const AUTHOR_DETAILS = 'AUTHOR_DETAILS';
 export const AUTHOR_OWNED = 'AUTHOR_OWNED';
 export const AUTHOR_BOOKS = 'AUTHOR_BOOKS';
 export const AUTHOR_BOOKS_OWNED = 'AUTHOR_BOOKS_OWNED';
+export const BOOK_READ = 'BOOK_READ';
 
 // Friends
 export const SEARCH_USERS = 'SEARCH_USERS';
+export const FRIENDS_BOOKS = 'BOOK_FRIENDS';
 
 // Books
 export const FETCH_BOOK = 'FETCH_BOOK';
-export const OWNED = 'OWNED';
+export const BOOK_OWNED = 'BOOK_OWNED';
 
 // Global
 export const LOADING = 'LOADING';

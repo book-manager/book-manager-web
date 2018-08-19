@@ -5,11 +5,12 @@ export default {
     REGISTER: root + 'register',
     FRIENDSHIP: {
       PENDING: 'api/friendship/pending',
-      ADD: root + 'api/friendship'
+      ADD: 'api/friendship'
     },
     FRIENDS: {
-      FETCH: root + 'api/friends/',
+      FETCH: 'api/friends/',
       SEARCH: root + 'api/friends/search',
+      BOOKS: 'api/friends/book'
     },
     AUTHORS: {
       ROOT: 'api/authors',
@@ -20,8 +21,14 @@ export default {
       OWNERSHIP: root + '/api/authors/ownership'
     },
     BOOKS: {
-      ROOT: root + 'api/books',
-      OWNED: root + 'api/books/owned'
+      ROOT: 'api/books',
+      OWNED: 'api/books/owned',
+      ADD_OWNERSHIP: 'api/books/ownership',
+      READ: 'api/books/read',
+    },
+    BOOKS_OWNERSHIP: {
+      ROOT: 'api/books_ownership',
+      READ: '/api/books_ownership/read'
     }
   }
 };
