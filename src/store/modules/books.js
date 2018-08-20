@@ -6,10 +6,12 @@ import {
   FETCH_BOOK,
   BOOK_OWNED,
   BOOK_READ,
+  FETCH_BOOKS
 } from '../mutation-types';
 
 const state = {
-  book: [],
+  book: {},
+  books: [],
   owned: false,
   bookRead: false
 };
@@ -17,7 +19,8 @@ const state = {
 const getters = {
   book: state => state.book,
   bookOwned: state => state.owned,
-  bookRead: state => state.bookRead
+  bookRead: state => state.bookRead,
+  books: state => state.books
 };
 
 const actions = {
@@ -106,6 +109,14 @@ const actions = {
         resolve(response);
       });
     });
+  },
+  fetchBooks (store) {
+    store.dispatch('loading');
+    return new Promise((resolve, reject) => {
+      Api(store).get(config.API.BOOKS.ROOT).then(response => {
+        store.commit(FETCH_BOOKS, { books: response.data.data });
+      });
+    });
   }
 };
 
@@ -124,6 +135,9 @@ const mutations = {
     read
   }) {
     store.bookRead = read;
+  },
+  [FETCH_BOOKS] (store, { books }) {
+    store.books = books;
   }
 };
 

@@ -14,6 +14,7 @@ import AuthorSearch from '@/components/pages/author/AuthorSearch';
 
 import BooksForm from '@/components/pages/book/BookForm';
 import BooksDetails from '@/components/pages/book/BookDetails';
+import Books from '@/components/pages/book/Books';
 
 import FriendsSearch from '@/components/pages/friend/FriendsSearch';
 import FriendsList from '@/components/pages/friend/FriendsList';
@@ -119,9 +120,15 @@ const booksRoutes = [
   },
   {
     path: '/books/:id',
-    name: 'books',
+    name: 'book',
     component: BooksDetails,
     meta: {auth: true}
+  },
+  {
+    path: '/books',
+    name: 'books',
+    component: Books,
+    meta: { auth: true }
   }
 ];
 

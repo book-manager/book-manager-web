@@ -17,6 +17,7 @@ export const FRIENDS_BOOKS = 'BOOK_FRIENDS';
 // Books
 export const FETCH_BOOK = 'FETCH_BOOK';
 export const BOOK_OWNED = 'BOOK_OWNED';
+export const FETCH_BOOKS = 'FETCH_BOOKS';
 
 // Global
 export const LOADING = 'LOADING';
