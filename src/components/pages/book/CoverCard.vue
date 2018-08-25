@@ -1,9 +1,9 @@
 <template>
   <div class="card">
-    <div @click="showBookDetails(collection.id)" class="card-content">
-      <img :src="collection.thumbnail_url" :alt="collection.title">
-      <h4 class="card-title">{{ collection.title }}</h4>
-      <!-- <p>{{ collection.author.name }} {{ collection.author.surname }}</p> -->
+    <div @click="showBookDetails(collection.attributes.id)" class="card-content">
+      <img :src="collection.attributes.thumbnail_url" :alt="collection.title">
+      <h4 class="card-title">{{ collection.attributes.title }}</h4>
+      <!-- <p>{{ collection.attributes.author.name }} {{ collection.attributes.author.surname }}</p> -->
     </div>
   </div>
 </template>

@@ -1,10 +1,10 @@
 <template>
   <section>
     <v-container class="author-info">
-      {{ book.author_name }} {{ book.author_surname }}
+      <!-- {{ book.included[0].attributes.name }} {{ book.included[0].attributes.surname }} -->
     </v-container>
     <v-container class="book-title">
-      {{ book.title }}
+      {{ book.data.attributes.title }}
     </v-container>
     <v-chip label v-if="owned" color="green">Owned</v-chip>
     <v-chip label v-if="read" color="grey">Read</v-chip>
@@ -22,7 +22,7 @@
     <!-- Community -->
     <!-- <vue-stars name="demo" active-color="#ffdd00" inactive-color="#999999" shadow-color="#ffff00" hover-color="#dddd00" :max="5" :value=bookCommunityRating :readonly="bookOwned" char="★" inactive-char="" class="" /> -->
     <v-container class="description">
-      {{ book.description }}
+      {{ book.data.attributes.description }}
     </v-container>
   </section>
 </template>

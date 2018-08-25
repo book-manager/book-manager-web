@@ -15,17 +15,17 @@
     <v-layout row wrap>
       <v-flex xs6>
         <div>
-          <img :src="authorDetails.avatar_url" alt="author avatar">
+          <img :src="authorAvatar" alt="author avatar">
         </div>
         <div>
-          <p class="author-name">{{ authorDetails.name }} {{ authorDetails.surname }}</p>
+          <p class="author-name">{{ authorDetails.data.attributes.name }} {{ authorDetails.data.attributes.surname }}</p>
         </div>
         <div>
-          <p>{{ authorDetails.description }}</p>
+          <p>{{ authorDetails.data.attributes.description }}</p>
         </div>
       </v-flex>
       <v-flex xs6>
-        <v-btn v-if="authorOwned" color="primary" :loading="false" @click="addAuthor">
+        <v-btn v-if="!authorOwned" color="primary" :loading="false" @click="addAuthor">
           Add to library
         </v-btn>
 
@@ -42,9 +42,9 @@
                 hide-details
               ></v-text-field>
             </v-card-title>
-          <v-data-table :headers="headers" :items="authorBooks" hide-actions class="elevation-1" :search="search">
+          <v-data-table :headers="headers" :items="authorDetails.included" hide-actions class="elevation-1" :search="search">
             <template slot="items" slot-scope="props" value="selected">
-              <td @click="showBook(props.item.id)">{{ props.item.title }}</td>
+              <td @click="showBook(props.item.attributes.id)">{{ props.item.attributes.title }}</td>
               <td v-if="props.item.owned">✅ </td>
               <td v-else>❌</td>
             </template>
@@ -81,6 +81,9 @@ export default {
           return book;
         }
       });
+    },
+    authorAvatar () {
+      return this.$store.getters.authorDetails.data.attributes.avatar_url;
     }
   },
   created () {

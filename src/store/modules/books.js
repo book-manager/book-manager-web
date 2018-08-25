@@ -10,8 +10,35 @@ import {
 } from '../mutation-types';
 
 const state = {
-  book: {},
-  books: [],
+  book: {
+    data: {
+      attributes: {
+        cover_url: '',
+        title: '',
+        description: ''
+      }
+    },
+    included: [{
+      name: '',
+      surname: ''
+    }]
+  },
+  books: [
+    {
+      data: {
+        attributes: {
+          cover_url: '',
+          title: '',
+          description: '',
+          id: ''
+        }
+      },
+      included: [{
+        name: '',
+        surname: ''
+      }]
+    }
+  ],
   owned: false,
   bookRead: false
 };
@@ -47,33 +74,27 @@ const actions = {
       });
     });
   },
-  fetchBookDetails (store, {
-    id
-  }) {
+  fetchBookDetails (store, { id }) {
     store.dispatch('loading');
     return new Promise((resolve, reject) => {
-      Api(store).get(`${config.API.BOOKS.ROOT}/${id}`).then((response) => {
+      Api(store).get(`${config.API.BOOKS.ROOT}/${id}`).then(response => {
         store.commit(FETCH_BOOK, {
-          book: response.data.data
+          book: response.data
         });
-        store.dispatch('checkOwned', {
-          id: id
-        }).then(() => {
+        store.dispatch('checkOwned', { id }).then(() => {
           store.dispatch('loading');
         });
       });
     });
   },
-  checkOwned (store, {
-    id
-  }) {
+  checkOwned (store, { id }) {
     return new Promise((resolve, reject) => {
       Api(store).get(`${config.API.BOOKS.OWNED}/${id}`).then(response => {
         store.commit(BOOK_OWNED, {
-          owned: response.data.data.owned
+          owned: response.data.data.attributes.owned
         });
         store.commit(BOOK_READ, {
-          read: response.data.data.read
+          read: response.data.data.attributes.read
         });
         resolve(response);
       });
@@ -95,7 +116,9 @@ const actions = {
       });
     });
   },
-  markAsRead (store, { bookID }) {
+  markAsRead (store, {
+    bookID
+  }) {
     store.dispatch('loading');
     return new Promise((resolve, reject) => {
       Api(store).post(config.API.BOOKS_OWNERSHIP.READ, {
@@ -105,7 +128,9 @@ const actions = {
         }
       }).then(response => {
         store.dispatch('loading');
-        store.commit(BOOK_READ, { read: true });
+        store.commit(BOOK_READ, {
+          read: true
+        });
         resolve(response);
       });
     });
@@ -114,7 +139,11 @@ const actions = {
     store.dispatch('loading');
     return new Promise((resolve, reject) => {
       Api(store).get(config.API.BOOKS.ROOT).then(response => {
-        store.commit(FETCH_BOOKS, { books: response.data.data });
+        console.log(response);
+        store.commit(FETCH_BOOKS, {
+          books: response.data.data
+        });
+        store.dispatch('loading');
       });
     });
   }
@@ -136,7 +165,9 @@ const mutations = {
   }) {
     store.bookRead = read;
   },
-  [FETCH_BOOKS] (store, { books }) {
+  [FETCH_BOOKS] (store, {
+    books
+  }) {
     store.books = books;
   }
 };

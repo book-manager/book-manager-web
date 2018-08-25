@@ -17,12 +17,12 @@
       <v-layout row elevation-5>
         <v-list class="lista">
           <template v-for="author in authors">
-            <v-list-tile avatar :key="author.id" class="user-list" @click="showDetails(author.id)">
+            <v-list-tile avatar :key="author.attributes.id" class="user-list" @click="showDetails(author.attributes.id)">
               <v-list-tile-avatar>
-                <img :src="author.avatar_url">
+                <img :src="author.attributes.avatar_url">
               </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title>{{ author.name }} {{ author.surname }}</v-list-tile-title>
+                <v-list-tile-title>{{ author.attributes.name }} {{ author.attributes.surname }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </template>
@@ -33,23 +33,22 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data () {
     return {
       query: '',
-      authors: []
     };
   },
   methods: {
     search () {
-      this.$store.dispatch('searchAuthor', { query: this.query }).then((response) => {
-        this.authors = response;
-      });
+      this.$store.dispatch('searchAuthor', { query: this.query });
     },
     showDetails (id) {
       this.$router.push({ path: `/author/${id}` });
     }
-  }
+  },
+  computed: mapGetters(['authors'])
 };
 </script>
 

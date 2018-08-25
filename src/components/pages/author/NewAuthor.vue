@@ -62,10 +62,8 @@
     }),
     methods: {
       addAuthor (form) {
-        this.sending = true;
-        this.$store.dispatch('addAuthor', { name: this.name, surname: this.surname, description: this.surname }).then((response) => {
-          this.sending = false;
-          this.$router.push({ path: `/author/details/${response.data.id}` });
+        this.$store.dispatch('addAuthor', { name: this.name, surname: this.surname, description: this.description }).then(response => {
+          this.$router.push({ path: `/author/${response.data.id}` });
         }).catch((error) => {
           this.error = true;
           this.errorMessage = error;

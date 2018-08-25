@@ -29,6 +29,9 @@ export default {
     BOOKS_OWNERSHIP: {
       ROOT: 'api/books_ownership',
       READ: '/api/books_ownership/read'
+    },
+    AUTHOR_OWNERSHIP: {
+      ROOT: 'api/ownership'
     }
   }
 };

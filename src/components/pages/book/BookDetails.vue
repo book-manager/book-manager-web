@@ -2,7 +2,7 @@
   <v-container grid-list-md text-xs-center elevation-5>
     <v-layout row wrap>
       <v-flex xs6>
-        <img :src="book.cover_url" alt="book cover" class="cover">
+        <img :src="cover" alt="book cover" class="cover">
       </v-flex>
       <v-flex xs6>
         <v-tabs fixed-tabs icons-and-text dark>
@@ -45,14 +45,12 @@ export default {
     BookDetailsTab,
     FriendsTab
   },
-  computed: mapGetters([
-    'book',
-    'bookOwned',
-    'bookRead',
-    'bookCommunityRating',
-    'friendsBook',
-    'loading'
-  ]),
+  computed: {
+    ...mapGetters(['book', 'bookOwned', 'bookRead', 'bookCommunityRating', 'friendsBook', 'loading']),
+    cover () {
+      return this.$store.getters.book.data.attributes.cover_url;
+    }
+  },
   created () {
     this.$store.dispatch('fetchBookDetails', { id: this.$route.params.id });
     this.$store.dispatch('showFriendsBooks', { bookID: this.$route.params.id });
@@ -60,11 +58,11 @@ export default {
   methods: {
     addAuthor () {
       this.$store
-        .dispatch('addBookToCollecation', { bookID: this.book.id })
+        .dispatch('addBookToCollecation', { bookID: this.book.data.attributes.id })
         .then(() => {});
     },
     markAsRead () {
-      this.$store.dispatch('markAsRead', { bookID: this.book.id });
+      this.$store.dispatch('markAsRead', { bookID: this.book.data.attributes.id });
     },
     showFriendProfile (id) {
       this.$router.push({ path: `/user/${id}` });

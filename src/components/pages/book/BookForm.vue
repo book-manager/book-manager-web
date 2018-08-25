@@ -6,13 +6,11 @@
           v-model="title"
           :rules="titleRules"
           label="Title"
-          required
         ></v-text-field>
         <v-text-field
           v-model="isbn"
           :rules="isbnRules"
           label="ISBN"
-          required
         ></v-text-field>
         <v-textarea
           name="input-7-1"
@@ -20,7 +18,6 @@
           value=""
           hint="Short book description"
           v-model="description"
-          :rules="descriptionRules"
         ></v-textarea>
         <v-autocomplete
           v-model="author"
@@ -32,13 +29,13 @@
             slot="item"
             slot-scope="{ item, tile }"
           >
-            {{ item.name }} {{ item.surname }} 
+            {{ item.attributes.name }} {{ item.attributes.surname }} 
           </template>
           <template
             slot="selection"
             slot-scope="{ item, title }"
          >
-            {{ item.name }} {{ item.surname }} 
+            {{ item.attributes.name }} {{ item.attributes.surname }} 
           </template>
         </v-autocomplete>
         <!-- <v-container class="file-upload">
@@ -92,7 +89,7 @@
     },
     methods: {
       addBook () {
-        this.$store.dispatch('addBook', { title: this.title, description: this.description, author_id: this.author.id, isbn: this.isbn, imgData: this.$refs.img.dataUrl, imageName: this.file.name }).then((response) => {
+        this.$store.dispatch('addBook', { title: this.title, description: this.description, author_id: 1, isbn: this.isbn, imgData: this.$refs.img.dataUrl, imageName: this.file.name }).then((response) => {
           this.$router.push({ path: `/book/details/${response.data.data.id}` });
         });
       },

@@ -1,42 +1,30 @@
 <template>
-  <div class="wrapper">
-    <v-text-field name="search" label="Search for a book" id="searchBox" v-model="query" ></v-text-field>
-    <div class="cards">
-      <card v-for="collection in books" :key="collection.id" :collection="collection" :showBookDetails="showDetails"></card>
-    </div>
-  </div>
+  <section>
+    <v-tabs fixed-tabs>
+      <v-tab key="covers">
+        Covers
+      </v-tab>
+      <v-tab key="friend">
+        Friends
+      </v-tab>
+      <v-tab-item key="covers">
+        <books-covers />
+      </v-tab-item>
+      <v-tab-item key="friend">
+      </v-tab-item>
+    </v-tabs>
+  </section>
 </template>
 
 <script>
-import Card from './CoverCard';
+import BooksCovers from './BooksCovers';
 export default {
-  data () {
-    return {
-      query: ''
-    };
+  components: {
+    BooksCovers
   },
   created () {
     this.$store.dispatch('fetchBooks');
   },
-  components: {
-    Card
-  },
-  computed: {
-    books () {
-      return this.$store.getters.books.filter(book => {
-        if (this.query !== '') {
-          return book.title.toUpperCase().includes(this.query);
-        } else {
-          return book;
-        }
-      });
-    }
-  },
-  methods: {
-    showDetails (id) {
-      this.$router.push({ path: '/books/' + id });
-    }
-  }
 };
 </script>
 
