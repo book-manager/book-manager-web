@@ -2,12 +2,9 @@ import axios from 'axios';
 import config from '../../config';
 
 import Api from '@/http/axios';
+import user from '@/api/user';
 
-import {
-  USER_LOGOUT,
-  USER_AUTH_SUCCESS,
-  USER_PENDING_FRIENDSHIP
-} from '../mutation-types';
+import * as types from '../mutations/user';
 
 const state = {
   token: sessionStorage.getItem('token') || '',
@@ -25,47 +22,16 @@ const getters = {
 };
 
 const actions = {
-  login (store, {email, password}) {
-    return new Promise((resolve, reject) => {
-      axios.post(config.API.LOGIN, {
-        email,
-        password
-      }).then(({data}) => {
-        if (data.success) {
-          store.commit(USER_AUTH_SUCCESS, {user: data.user, token: data.token});
-          resolve();
-        } else {
-          reject(data.message);
-        }
-      }).catch(() => {
-        reject('Error sending request to server!');
-      });
-    });
+  async login (store, { email, password }) {
+    const results = await user.login(store, email, password);
+    store.commit(types.USER_AUTH_SUCCESS, results);
   },
-  register (store, {first_name, last_name, email, password, cpassword}) {
-    return new Promise((resolve, reject) => {
-      if (password !== cpassword) {
-        reject(new Error('Passwords do not match'));
-      }
-      axios.post(config.API.REGISTER, {
-        first_name,
-        last_name,
-        email,
-        password,
-        cpassword
-      }).then(response => {
-        if (response.status === 201) {
-          resolve(response);
-        } else {
-          reject(response.message);
-        }
-      }).catch(err => {
-        reject(err);
-      });
-    });
+  async register (store, {first_name, last_name, email, password, cpassword}) {
+    await user.register(store, first_name, last_name, email, password, cpassword);
+    this.$router.push({path: '/login'});
   },
   logout (store) {
-    store.commit(USER_LOGOUT);
+    store.commit(types.USER_LOGOUT);
   },
   getUserDetails (store, {id}) {
     return new Promise((resolve, reject) => {
@@ -78,16 +44,6 @@ const actions = {
       });
     });
   },
-  // checkUserFriendship (store, { friendId }) {
-  //   return new Promise((resolve, reject) => {
-  //     // TODO: Refactor to get
-  //     Api(store.getters.token).post('/api/friendship/check-friendship', {
-  //       friend_id: friendId
-  //     }).then(response => {
-  //       resolve(response);
-  //     });
-  //   });
-  // },
   checkUserFriendship (store, { friendId }) {
     return new Promise((resolve, reject) => {
       axios.post(`http://localhost:4000/api/friendship/check-friendship`, {
@@ -104,7 +60,7 @@ const actions = {
   checkPendingFriendships (store) {
     return new Promise((resolve, reject) => {
       Api(store).get(config.API.FRIENDSHIP.PENDING).then(response => {
-        store.commit(USER_PENDING_FRIENDSHIP, { pendingFriendship: response.data.data });
+        store.commit(types.USER_PENDING_FRIENDSHIP, { pendingFriendship: response.data.data });
         resolve(response);
       }).catch(error => {
         reject(error);
@@ -114,8 +70,7 @@ const actions = {
 };
 
 const mutations = {
-  [USER_AUTH_SUCCESS] (store, {user, token}) {
-    console.log(user);
+  [types.USER_AUTH_SUCCESS] (store, { user, token }) {
     store.user = user;
     store.error = '';
     store.token = token;
@@ -123,12 +78,12 @@ const mutations = {
     sessionStorage.setItem('admin', user.is_admin);
     sessionStorage.setItem('user', JSON.stringify(user));
   },
-  [USER_LOGOUT] (store) {
+  [types.USER_LOGOUT] (store) {
     store.user = {};
     store.token = '';
     sessionStorage.clear();
   },
-  [USER_PENDING_FRIENDSHIP] (store, { pendingFriendship }) {
+  [types.USER_PENDING_FRIENDSHIP] (store, { pendingFriendship }) {
     store.pending_friendship = pendingFriendship;
   }
 };
