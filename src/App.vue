@@ -16,6 +16,6 @@
     name: 'app',
     components: {
       'navbar': Navbar,
-    },
+    }
   };
 </script>

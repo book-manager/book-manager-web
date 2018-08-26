@@ -58,12 +58,8 @@ const actions = {
     const friendshipRequests = await friend.pendingRequests(store);
     store.commit(types.FRIENDSHIP_REQUESTS, { requests: friendshipRequests.data.data });
   },
-  fetchFriends (store) {
-    return new Promise((resolve, reject) => {
-      Api(store).get(config.API.FRIENDS.FETCH).then(response => {
-        resolve(response.data.data);
-      });
-    });
+  async fetchFriends (store) {
+    return friend.fetchFriends(store);
   },
   showFriendsBooks (store, { bookID }) {
     return new Promise((resolve, reject) => {

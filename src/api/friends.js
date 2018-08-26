@@ -22,5 +22,12 @@ export default {
   async accept (store, id) {
     const result = await API(store).get(`${config.API.FRIENDSHIP.ACCEPT}/${id}`);
     return result;
+  },
+  async pendingRequests (store) {
+    const result = await API(store).get(config.API.FRIENDSHIP.PENDING);
+    return result;
+  },
+  async fetchFriends (store) {
+    return API(store).get(config.API.FRIENDS.FETCH);
   }
 };
