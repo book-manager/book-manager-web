@@ -2,8 +2,8 @@
   <v-toolbar v-if="isLogged">
     <v-toolbar-title>Booker</v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-badge left v-if="pending_friendship">
-      <span slot="badge">{{ pending_friendship.length }}</span>
+    <v-badge left v-if="incoming_requests">
+      <span slot="badge">{{ incoming_requests.length }}</span>
       <router-link to="/friends/requests">
       <span>Friends requests</span>
       </router-link>
@@ -80,12 +80,7 @@
   import { mapGetters } from 'vuex';
 
   export default {
-    data () {
-      return {
-        pending_requests: null
-      }
-    },
-    computed: mapGetters(['isLogged', 'user', 'pending_friendship']),
+    computed: mapGetters(['isLogged', 'user', 'incoming_requests']),
     created () {
       this.$store.dispatch('checkPendingFriendships');
     },

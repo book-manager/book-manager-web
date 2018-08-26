@@ -1,6 +1,3 @@
-import config from '../../config';
-
-import Api from '@/http/axios';
 import user from '@/api/user';
 
 import * as types from '../mutations/user';
@@ -34,16 +31,6 @@ const actions = {
   },
   async getUserDetails (store, { id }) {
     return user.details(store, id);
-  },
-  checkPendingFriendships (store) {
-    return new Promise((resolve, reject) => {
-      Api(store).get(config.API.FRIENDSHIP.PENDING).then(response => {
-        store.commit(types.USER_PENDING_FRIENDSHIP, { pendingFriendship: response.data.data });
-        resolve(response);
-      }).catch(error => {
-        reject(error);
-      });
-    });
   }
 };
 

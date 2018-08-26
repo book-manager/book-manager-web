@@ -14,7 +14,8 @@ const state = {
   friendsBook: [],
   friendship: false,
   pending_friendship: false,
-  incoming: false
+  incoming: false,
+  incoming_requests: []
 };
 
 const getters = {
@@ -22,7 +23,8 @@ const getters = {
   friendsBook: state => state.friendsBook,
   friendship: state => state.friendship,
   user_pending_friendship: state => state.pending_friendship,
-  incoming: state => state.incoming
+  incoming: state => state.incoming,
+  incoming_requests: state => state.incoming_requests
 };
 
 const actions = {
@@ -51,6 +53,10 @@ const actions = {
   async acceptFriend (store, { id }) {
     store.commit(types.INCOMING_FRIEND_REQUEST, { incoming: false });
     return friend.accept(store, id);
+  },
+  async checkPendingFriendships (store) {
+    const friendshipRequests = await friend.pendingRequests(store);
+    store.commit(types.FRIENDSHIP_REQUESTS, { requests: friendshipRequests.data.data });
   },
   fetchFriends (store) {
     return new Promise((resolve, reject) => {
@@ -89,6 +95,9 @@ const mutations = {
   },
   [types.INCOMING_FRIEND_REQUEST] (store, { incoming }) {
     store.incoming = incoming;
+  },
+  [types.FRIENDSHIP_REQUESTS] (store, { requests }) {
+    store.incoming_requests = requests;
   }
 };
 
