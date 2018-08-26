@@ -2,36 +2,27 @@
     <v-container grid-list-md text-xs-center>
       <v-layout row wrap>
         <v-flex xl6>
-          <img class="user-avatar" :src="user.avatar_url" :alt="user.name"> 
+          <img class="user-avatar" :src="user.attributes.avatar_url" :alt="user.attributes.name"> 
         </v-flex>
         <v-flex xl6>
           <v-layout row wrap>
-            <v-flex xl12>
-              <p class="user-name">{{ user.name }} {{ user.surname }}</p>
-              <p v-if="is_friend">
-                <v-chip color="green">Friend</v-chip>
-              </p>
-              <p v-if="pending">
-                <v-chip color="yellow">Pending</v-chip>
-              </p>
-              <v-btn v-if="!is_friend"
+              <p class="user-name">{{ user.attributes.name }} {{ user.attributes.surname }}
+                 <v-chip v-show="friendship" color="green">Friend</v-chip>
+              </p> 
+              <v-btn v-show="!incoming && (!friendship && !pending)"
                 color="primary"
                 :loading="false"
                 @click="addFriend"
               >
                 Add 
               </v-btn>
-              <v-btn v-if="incoming"
-                color="green"
-                :loading="false"
-                @click="addFriend"
-              >
+              <p v-if="pending">
+                <v-chip color="yellow">Pending</v-chip>
+              </p>
+
+              <v-btn v-show="incoming" color="green" @click="acceptRequest">
                 Accept
               </v-btn>
-            </v-flex>
-            <v-flex xl12>
-              <p>Member from: {{ user.created_at }}</p>
-            </v-flex>
           </v-layout>
         </v-flex>
       </v-layout>
@@ -39,53 +30,58 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data () {
     return {
-      loading: false,
-      error: false,
       user: {},
-      is_friend: false,
       pending: false,
-      incoming: false
+      friendship: false
     };
   },
-  created () {
-    this.loading = true;
-    this.$store.dispatch('getUserDetails', { id: this.$route.params.id }).then((response) => {
-      this.user = response;
-      this.$store.dispatch('checkUserFriendship', { friendId: this.$route.params.id }).then((response) => {
-        switch (response.data.friendship) {
-          case true:
-            this.is_friend = true;
-            break;
-          case false:
-            this.is_friend = false;
-            break;
-          case 'pending':
-            this.pending = true;
-            break;
-          case 'initiated':
-            this.incoming = true;
-            break;
-          default:
-            break;
-        }
-      });
-    }).catch((error) => {
-      this.loading = false;
-      this.error = true;
-      console.log(error);
-    });
+  async created () {
+    const userResponse = await this.$store.dispatch('getUserDetails', { id: this.$route.params.id });
+    this.user = userResponse.data.data;
+
+    this.$store.dispatch('checkIncomingFriendship', { id: this.$route.params.id });
+
+    const friendshipResponse = await this.$store.dispatch('checkUserFriendship', { id: this.$route.params.id });
+    console.log(friendshipResponse);
+
+    const friendship = friendshipResponse.data.data;
+    if (friendship.id === '') {
+      this.friendship = false;
+      this.pending = false;
+    } else if (friendship.attributes.pending === true) {
+      this.friendship = false;
+      this.pending = true;
+    } else if (friendship.id !== '') {
+      this.friendship = true;
+      this.$store.dispatch('setIncoming', { incoming: false });
+    }
+  },
+  computed: {
+    ...mapGetters(['incoming']),
+    showPending () {
+      return this.$store.getters.user_pending_friendship;
+    },
+    showAddFriend () {
+      console.log(this.$store.getters.user_pending_friendship);
+      return (this.$store.getters.user_pending_friendship);
+    }
   },
   methods: {
     addFriend () {
-      this.$store.dispatch('addFriend', { id: this.$route.params.id }).then((response) => {
-        console.log(response);
-      })
+      this.$store.dispatch('addFriend', { id: this.$route.params.id });
+    },
+    async acceptRequest () {
+      const result = await this.$store.dispatch('acceptFriend', { id: this.$route.params.id });
+      if (result.status === 2000) {
+        this.friendship = true;
+      }
     }
   }
-}
+};
 </script>
 
 <style scoped>

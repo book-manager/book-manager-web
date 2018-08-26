@@ -6,10 +6,6 @@ export const AUTHOR_BOOKS_OWNED = 'AUTHOR_BOOKS_OWNED';
 export const BOOK_READ = 'BOOK_READ';
 export const AUTHOR_CREATED = 'AUTHOR_CREATED';
 
-// Friends
-export const SEARCH_USERS = 'SEARCH_USERS';
-export const FRIENDS_BOOKS = 'BOOK_FRIENDS';
-
 // Books
 export const FETCH_BOOK = 'FETCH_BOOK';
 export const BOOK_OWNED = 'BOOK_OWNED';

@@ -17,12 +17,12 @@
       <v-layout row elevation-5>
         <v-list class="lista">
           <template v-for="user in users">
-            <v-list-tile avatar :key="user.id" class="user-list" @click="viewProfile(user.id)">
+            <v-list-tile avatar :key="user.attributes.id" class="user-list" @click="viewProfile(user.attributes.id)">
               <v-list-tile-avatar>
-                <img :src="user.avatar_url">
+                <img :src="user.attributes.avatar_url">
               </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title>{{ user.name }} {{ user.surname }}</v-list-tile-title>
+                <v-list-tile-title>{{ user.attributes.name }} {{ user.attributes.surname }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </template>

@@ -66,7 +66,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       store.dispatch('loading');
       Api(store).get(`${config.API.AUTHORS.ROOT}/${id}`).then(response => {
-        console.log(response);
         store.commit(AUTHOR_DETAILS, { author: response.data });
         store.dispatch('checkOwned', { id: id }).then(() => {
           store.dispatch('loading');

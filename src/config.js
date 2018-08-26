@@ -5,7 +5,10 @@ export default {
     REGISTER: root + 'register',
     FRIENDSHIP: {
       PENDING: 'api/friendship/pending',
-      ADD: 'api/friendship'
+      ADD: 'api/friendship',
+      CHECK: 'api/friendship/check-friendship',
+      INCOMING: 'api/friendship/check-incoming',
+      ACCEPT: 'api/friendship/accept'
     },
     FRIENDS: {
       FETCH: 'api/friends/',
@@ -32,6 +35,9 @@ export default {
     },
     AUTHOR_OWNERSHIP: {
       ROOT: 'api/ownership'
+    },
+    USERS: {
+      ROOT: 'api/users'
     }
   }
 };

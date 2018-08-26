@@ -1,4 +1,3 @@
-import axios from 'axios';
 import config from '../../config';
 
 import Api from '@/http/axios';
@@ -33,29 +32,8 @@ const actions = {
   logout (store) {
     store.commit(types.USER_LOGOUT);
   },
-  getUserDetails (store, {id}) {
-    return new Promise((resolve, reject) => {
-      axios.get(`http://localhost:4000/api/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${store.getters.token}`
-        }
-      }).then(response => {
-        resolve(response.data.data);
-      });
-    });
-  },
-  checkUserFriendship (store, { friendId }) {
-    return new Promise((resolve, reject) => {
-      axios.post(`http://localhost:4000/api/friendship/check-friendship`, {
-        friend_id: friendId
-      }, {
-        headers: {
-          Authorization: `Bearer ${store.getters.token}`
-        }
-      }).then(response => {
-        resolve(response);
-      });
-    });
+  async getUserDetails (store, { id }) {
+    return user.details(store, id);
   },
   checkPendingFriendships (store) {
     return new Promise((resolve, reject) => {
