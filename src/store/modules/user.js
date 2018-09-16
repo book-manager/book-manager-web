@@ -21,6 +21,7 @@ const actions = {
   async login (store, { email, password }) {
     const results = await user.login(store, email, password);
     store.commit(types.USER_AUTH_SUCCESS, results);
+    return results;
   },
   async register (store, {first_name, last_name, email, password, cpassword}) {
     await user.register(store, first_name, last_name, email, password, cpassword);

@@ -1,33 +1,14 @@
 <template>
-  <v-container grid-list-md text-xs-center elevation-5>
+  <v-container fluid grid-list-xl text-xl-center elevation-1 class="details">
     <v-layout row wrap>
+    <vue-element-loading :active="loading" :is-full-screen="true" />
       <v-flex xs6>
         <img :src="cover" alt="book cover" class="cover">
       </v-flex>
       <v-flex xs6>
-        <v-tabs fixed-tabs icons-and-text dark>
-          <v-tab key="info">
-            Info
-            <v-icon>info</v-icon>
-          </v-tab>
-          <v-tab key="friends">
-            Friends
-            <v-icon>account_box</v-icon>
-          </v-tab>
-          <v-tab-item key="info">
-            <v-card-text>
-              <book-details-tab :book="book" :owned="bookOwned" :read="bookRead" :addAuthor="addAuthor" :markAsRead="markAsRead"></book-details-tab>
-            </v-card-text>
-          </v-tab-item>
-          <v-tab-item key="friends">
-            <v-card-text>
-              <friends-tab :friends="friendsBook" :showFriendProfile="showFriendProfile"/>
-            </v-card-text>
-          </v-tab-item>
-        </v-tabs>
+        <book-details-tab :book="book" :owned="bookOwned" :read="bookRead" :addAuthor="addAuthor" :markAsRead="markAsRead"></book-details-tab>
       </v-flex>
     </v-layout>
-    <vue-element-loading :active="loading" :is-full-screen="true" />
 
   </v-container>
 </template>
@@ -72,4 +53,8 @@ export default {
 </script>
 
 <style>
+.details {
+  width: 100%;
+  height: 100%;
+}
 </style>

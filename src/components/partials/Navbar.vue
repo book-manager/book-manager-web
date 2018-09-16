@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar v-if="isLogged">
+  <v-toolbar v-if="isLogged" flat>
     <v-toolbar-title>Booker</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-badge left v-if="incoming_requests">
@@ -100,13 +100,5 @@
 </script>
 
 <style scoped>
-  /* .navbar {
-    display: flex;
-    justify-content: space-between;
-  }
 
-  .navbar-not-logged {
-    display: flex;
-    justify-content: flex-end;
-  } */
 </style>
