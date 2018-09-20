@@ -1,34 +1,15 @@
 <template>
-    <v-container xs-6 text-md-center elevation-3>
-     <v-layout align-center justify-center row fill-height>
-       <v-flex>
-          <v-form>
-            <v-text-field
-            label="Email"
-            v-model="email"
-            required
-            :rules="emailRules">
-            </v-text-field>
-            <v-text-field
-              label="Password"
-              v-model="password"
-              required
-              min="8"
-              type="password"
-              counter
-            ></v-text-field>
-            <v-btn
-              color="primary"
-              flat
-              @click="login"
-              :disabled="!valid"
-            >
-              Login
-            </v-btn>
-          </v-form>
-       </v-flex>
-      </v-layout> 
-    </v-container>
+  <el-form ref="form" :model="form" label-width="120px" class="login-form">
+    <el-form-item label="Email">
+      <el-input v-model="form.email"></el-input>
+    </el-form-item>
+    <el-form-item label="Password" prop="pass">
+      <el-input type="password" v-model="form.password" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="login">Login</el-button>
+    </el-form-item>
+  </el-form>
 </template>
 
 <!-- TODO: Validation -->
@@ -36,18 +17,16 @@
   export default {
     data: function () {
       return {
-        email: '',
-        password: '',
-        emailRules: [
-          v => !!v || 'E-mail is required',
-          v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
-        ]
+        form: {
+          email: '',
+          password: ''
+        }
       };
     },
     methods: {
       login () {
         this.pending = true;
-        this.$store.dispatch('login', this)
+        this.$store.dispatch('login', this.form)
           .then(() => {
             this.pending = false;
             this.$router.push({name: 'home'});
@@ -66,7 +45,6 @@
   };
 </script>
 
-<!-- TODO: Make it vertically center -->
 <style scoped>
   .login-form {
     width: 30%;

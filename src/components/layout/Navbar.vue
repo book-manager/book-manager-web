@@ -1,5 +1,29 @@
 <template>
-  <v-toolbar v-if="isLogged" flat>
+<div class="navWrapper"  v-if="isLogged">
+    <div id="menu" :class="{ active: isActive }">
+      <el-menu mode="horizontal" :router="true">
+      <el-menu-item id="logo" index="/" :route="{ name: 'Root'}">
+        <logo></logo>
+      </el-menu-item>
+      <el-menu-item index="/friends/requests" :route="{ name: 'FriendsRequests' }">
+        <el-badge :value="incoming_requests" class="item"></el-badge>          
+        Friendship requests
+      </el-menu-item>
+      <el-submenu index="authors-submenu">
+        <template slot="title">Authors</template>
+        <el-menu-item index="/author" :route="{ name: 'authors' }">My authors</el-menu-item>
+        <el-menu-item index="/author/search" :route="{ name: 'AuthorSearch' }">Search</el-menu-item>
+        <el-menu-item index="/author/new" :route="{ name: 'authorNew' }">Add</el-menu-item>
+      </el-submenu>
+      </el-menu>
+    </div>
+    <div id="toggle" @click="select()">
+      <div class="span" id="top" :class="{ active: isActive }"></div>
+      <div class="span" id="middle" :class="{ active: isActive }"></div>
+      <div class="span" id="bottom" :class="{ active: isActive }"></div>
+    </div>
+</div>
+  <!-- <v-toolbar v-if="isLogged" flat>
     <v-toolbar-title>Booker</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-badge left v-if="incoming_requests">
@@ -65,24 +89,33 @@
       </v-menu>
     </v-toolbar-items>
   </v-toolbar>
-    <v-toolbar v-else>
+    <v-toolbar v-else> -->
     <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
-    <v-toolbar-title>Booker</v-toolbar-title>
+    <!-- <v-toolbar-title>Booker</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
       <v-btn flat @click="login">Login</v-btn>
       <v-btn flat @click="register">Register</v-btn>
     </v-toolbar-items>
-  </v-toolbar>
+  </v-toolbar> -->
 </template>
 
 <script>
   import { mapGetters } from 'vuex';
+  import Logo from '@/components/Logo';
 
   export default {
+    data () {
+      return {
+        isActive: false
+      };
+    },
+    components: {
+      Logo
+    },
     computed: mapGetters(['isLogged', 'user', 'incoming_requests']),
     created () {
-      this.$store.dispatch('checkPendingFriendships');
+      // this.$store.dispatch('checkPendingFriendships');
     },
     methods: {
       logout () {
@@ -94,6 +127,9 @@
       },
       register () {
         this.$router.push({name: 'Register'});
+      },
+      select () {
+        this.isActive = !this.isActive;
       }
     },
   };

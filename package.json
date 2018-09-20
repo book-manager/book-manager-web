@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "buefy": "^0.6.6",
+    "element-ui": "^2.4.7",
     "font-awesome": "^4.7.0",
     "moment": "^2.19.1",
     "node-sass": "^4.5.3",

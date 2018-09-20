@@ -7,6 +7,9 @@ import { sync } from 'vuex-router-sync';
 import store from './store';
 import './main.scss';
 
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 
@@ -21,6 +24,8 @@ Vue.component('VueElementLoading', VueElementLoading);
 
 Vue.component('ImgInputer', ImgInputer);
 Vue.use(Vuetify);
+
+Vue.use(ElementUI);
 
 Vue.config.productionTip = false;
 
