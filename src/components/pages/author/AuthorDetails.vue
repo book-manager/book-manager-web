@@ -1,17 +1,5 @@
 <template>
   <v-container grid-list-md text-xs-center elevation-5>
-    <v-dialog v-model="loading" hide-overlay persistent width="300">
-      <v-card color="primary" dark>
-        <v-card-text>
-          Please stand by
-          <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
-    <!-- <v-alert :value="success" type="success" transition="scale-transition">
-      {{ successMsg }}
-    </v-alert> -->
     <v-layout row wrap>
       <v-flex xs6>
         <div>
@@ -29,9 +17,11 @@
           Add to library
         </v-btn>
 
-        <p v-if="authorOwned">
-          <v-chip color="green">In library</v-chip>
+        <p >
+          <v-chip label v-if="authorOwned" color="green">In library</v-chip>
+          <v-chip label color="pink">Favourite</v-chip>
         </p>
+
         <v-card>
            <v-card-title>
               <v-text-field

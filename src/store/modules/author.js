@@ -1,6 +1,9 @@
 import axios from 'axios';
 import config from '../../config';
 
+import author from '@/api/author';
+import types from '../mutations/author';
+
 import Api from '@/http/axios';
 
 import {
@@ -42,6 +45,13 @@ const getters = {
 };
 
 const actions = {
+  async fetchAuthorDetails (store, { id, author_owned }) {
+    const results = await author.fetchDetails(store, id, author_owned);
+    store.commit(types.AUTHOR_DETAILS, { author: results.data });
+
+    const owned = await author.checkOwned(store, id);
+    store.commit(types.OWNED, { owned: owned.data });
+  },
   fetchAuthors (store) {
     return new Promise((resolve, reject) => {
       Api(store).get(config.API.AUTHORS.ROOT).then(response => {
@@ -62,19 +72,6 @@ const actions = {
       });
     });
   },
-  fetchAuthorDetails (store, { id }) {
-    return new Promise((resolve, reject) => {
-      store.dispatch('loading');
-      Api(store).get(`${config.API.AUTHORS.ROOT}/${id}`).then(response => {
-        store.commit(AUTHOR_DETAILS, { author: response.data });
-        store.dispatch('checkOwned', { id: id }).then(() => {
-          store.dispatch('loading');
-        });
-      }).catch(error => {
-        reject(error);
-      });
-    });
-  },
   searchAuthor (store, { query }) {
     return new Promise((resolve, reject) => {
       axios.get(`${config.API.AUTHORS.SEARCH}/${query}`, {
@@ -84,14 +81,6 @@ const actions = {
       }).then(response => {
         store.commit(FETCH_AUTHORS, { authors: response.data.data });
         resolve(response.data.data);
-      });
-    });
-  },
-  checkOwned (store, { id }) {
-    return new Promise((resolve, reject) => {
-      Api(store).get(`${config.API.AUTHOR_OWNERSHIP.ROOT}/${id}`).then(response => {
-        store.commit(AUTHOR_OWNED, { owned: response.data.data.attributes.owned });
-        resolve(response);
       });
     });
   },

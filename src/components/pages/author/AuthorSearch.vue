@@ -1,35 +1,40 @@
 <template>
-  <section>
-    <v-container fluid grid-list-xl>
-      <v-layout row justify-space-between>
-        <v-flex xs8 xl10>
-           <v-text-field
-              name="search"
-              label="Search for an author"
-              id="searchBox"
-              v-model="query"
-            ></v-text-field>
-        </v-flex>
-        <v-flex xs4 xl2>
-          <v-btn @click="search">Search</v-btn>
-        </v-flex>
-      </v-layout>
-      <v-layout row elevation-5>
-        <v-list class="lista">
-          <template v-for="author in authors">
-            <v-list-tile avatar :key="author.attributes.id" class="user-list" @click="showDetails(author.attributes.id)">
-              <v-list-tile-avatar>
-                <img :src="author.attributes.avatar_url">
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ author.attributes.name }} {{ author.attributes.surname }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </template>
-        </v-list>
-      </v-layout>
-    </v-container>
-  </section>
+  <div class="author-search">
+    <el-row>
+      <el-col :span="18">
+        <el-input
+          placeholder="Search for author"
+          v-model="query"
+          clearable>
+        </el-input>
+      </el-col>
+      <el-col :span="6" class="search-button">
+          <el-button type="primary" @click="search" plain>Search</el-button>
+      </el-col>
+
+      <el-col :span="24" class="search-results">
+        <el-table
+          :data="authors"
+          style="width: 100%"
+          @row-click="showDetails">
+          <el-table-column
+            prop="name"
+            label="Name">
+          </el-table-column>
+          <el-table-column
+            prop="surname"
+            label="Surname">
+          </el-table-column>
+          <el-table-column
+            label="Books">
+            <template slot-scope="scope">
+             {{ scope.row.books.length }}
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -44,17 +49,28 @@ export default {
     search () {
       this.$store.dispatch('searchAuthor', { query: this.query });
     },
-    showDetails (id) {
-      this.$router.push({ path: `/author/${id}` });
+    showDetails (row, event, column) {
+      this.$router.push({ path: `/author/${row.id}` });
     }
   },
   computed: mapGetters(['authors'])
 };
 </script>
 
-<style>
-  .author-table {
-    margin-top: 3em;
-    width: 100%;
+<style scoped>
+  .author-search {
+    width: 80%;
+    text-align: center;
+    margin: auto;
+    padding-top: 1em;
+  }
+
+  .search-button {
+    text-align: left;
+    padding-left: 1em;
+  }
+
+  .search-results {
+    padding-top: 1em;
   }
 </style>
