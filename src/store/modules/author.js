@@ -16,21 +16,7 @@ import {
 
 const state = {
   authors: [],
-  authorDetails: {
-    data: {
-      attributes: {
-        name: '',
-        surname: '',
-        avatar_url: ''
-      }
-    },
-    included: [{
-      attributes: {
-        surname: '',
-        name: ''
-      }
-    }]
-  },
+  authorDetails: {},
   owned: false,
   authorBooks: [],
   authorOwnedUser: []
@@ -47,7 +33,7 @@ const getters = {
 const actions = {
   async fetchAuthorDetails (store, { id, author_owned }) {
     const results = await author.fetchDetails(store, id, author_owned);
-    store.commit(types.AUTHOR_DETAILS, { author: results.data });
+    store.commit('AUTHOR_DETAILS', { author: results.data });
 
     const owned = await author.checkOwned(store, id);
     store.commit(types.OWNED, { owned: owned.data });

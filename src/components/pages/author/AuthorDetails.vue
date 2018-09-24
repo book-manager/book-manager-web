@@ -1,51 +1,36 @@
 <template>
-  <v-container grid-list-md text-xs-center elevation-5>
-    <v-layout row wrap>
-      <v-flex xs6>
-        <div>
-          <img :src="authorAvatar" alt="author avatar">
-        </div>
-        <div>
-          <p class="author-name">{{ authorDetails.data.attributes.name }} {{ authorDetails.data.attributes.surname }}</p>
-        </div>
-        <div>
-          <p>{{ authorDetails.data.attributes.description }}</p>
-        </div>
-      </v-flex>
-      <v-flex xs6>
-        <v-btn v-if="!authorOwned" color="primary" :loading="false" @click="addAuthor">
-          Add to library
-        </v-btn>
-
-        <p >
-          <v-chip label v-if="authorOwned" color="green">In library</v-chip>
-          <v-chip label color="pink">Favourite</v-chip>
-        </p>
-
-        <v-card>
-           <v-card-title>
-              <v-text-field
-                v-model="search"
-                append-icon="search"
-                label="Search"
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-card-title>
-          <v-data-table :headers="headers" :items="authorDetails.included" hide-actions class="elevation-1" :search="search">
-            <template slot="items" slot-scope="props" value="selected">
-              <td @click="showBook(props.item.attributes.id)">{{ props.item.attributes.title }}</td>
-              <td v-if="props.item.owned">✅ </td>
-              <td v-else>❌</td>
-            </template>
-            <v-alert slot="no-results" :value="true" color="error" icon="warning">
-              Your search for "{{ search }}" found no results.
-            </v-alert>
-          </v-data-table>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <section>
+      <el-row :gutter="10" class="author-details">
+          <el-col :xs="24" :lg="12" :xl="12"><img :src="authorDetails.avatar_url"/></el-col>
+          <el-col :xs="24" :lg="12" :xl="12">
+            <div>
+              <el-button v-if="!authorOwned" type="primary" plain>Add as owned</el-button>
+              <el-tag v-if="authorOwned" type="primary">Owned</el-tag>
+              <el-button v-if="!authorFavourite" type="danger" plain>Add to favourite</el-button>
+              <el-tag v-if="authorFavourite" type="primary">Owned</el-tag>
+            </div>
+            <p class="author-name">{{ authorDetails.name }} {{ authorDetails.surname }}</p>
+            <p class="description"> {{ authorDetails.description }}</p>
+          </el-col>
+      </el-row>
+      <div class="books">
+        <el-table
+            :data="authorDetails.books"
+            style="width: 100%"
+            @row-click="showBook">
+            <el-table-column
+              prop="title"
+              label="Title">
+            </el-table-column>
+            <el-table-column
+              label="Owned">
+              <template slot-scope="scope">
+              {{ scope.row.owned ? "Owned" : "Not owned"}}
+              </template>
+          </el-table-column>
+          </el-table>
+      </div>
+  </section>
 </template>
 
 <script>
@@ -54,11 +39,8 @@ import { mapGetters } from 'vuex';
 export default {
   data () {
     return {
-      headers: [
-        { text: 'Title', value: 'title', sortable: false, align: 'left' },
-        { text: 'Owned', value: 'owned', sortable: false, align: 'left' }
-      ],
-      search: ''
+      search: '',
+      authorFavourite: false
     };
   },
   computed: {
@@ -71,9 +53,6 @@ export default {
           return book;
         }
       });
-    },
-    authorAvatar () {
-      return this.$store.getters.authorDetails.data.attributes.avatar_url;
     }
   },
   created () {
@@ -90,8 +69,8 @@ export default {
           } has been added to your collection`;
         });
     },
-    showBook (id) {
-      this.$router.push({ path: `/books/${id}` });
+    showBook (row, event, column) {
+      this.$router.push({ path: `/books/${row.id}` });
     }
   }
 };
@@ -99,8 +78,24 @@ export default {
 
 
 <style scoped>
-.author-name {
-  font-weight: bold;
-  font-size: 2em;
-}
+  .author-name {
+    font-weight: bold;
+    font-size: 3em;
+  }
+
+  .author-details {
+    padding-top: 1em;
+  }
+
+  .description {
+    font-size: 1.5em;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: inherit;
+    line-height: 1.5em;
+  }
+
+  .books {
+    padding: 2em;
+  }
 </style>
