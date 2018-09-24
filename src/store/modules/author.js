@@ -2,8 +2,6 @@ import axios from 'axios';
 import config from '../../config';
 
 import author from '@/api/author';
-import types from '../mutations/author';
-
 import Api from '@/http/axios';
 
 import {
@@ -35,19 +33,11 @@ const actions = {
     const results = await author.fetchDetails(store, id, author_owned);
     store.commit('AUTHOR_DETAILS', { author: results.data });
 
-    const owned = await author.checkOwned(store, id);
-    store.commit(types.OWNED, { owned: owned.data });
+    const owned = await author.owned(store, id);
+    store.commit(AUTHOR_OWNED, { owned: owned.data });
   },
-  fetchAuthors (store) {
-    return new Promise((resolve, reject) => {
-      Api(store).get(config.API.AUTHORS.ROOT).then(response => {
-        store.commit(FETCH_AUTHORS, {
-          authors: response.data
-        });
-      }).catch(error => {
-        reject(error);
-      });
-    });
+  async fetchAuthors (store) {
+    return author.fetchAuthors(store);
   },
   addAuthor (store, { name, surname, description }) {
     return new Promise((resolve, reject) => {

@@ -1,40 +1,53 @@
 <template>
-<v-container fluid>
-   <v-layout row elevation-5>
-     <v-list one-line class="lista">
-       <template v-for="author in authors.data">
-        <v-list-tile avatar :key="author.attributes.id" @click="viewProfile(author.attributes.id)">
-           <v-list-tile-avatar>
-            <img :src="author.attributes.avatar_url">
-          </v-list-tile-avatar>
-          <v-list-tile-content>
-            <v-list-tile-title>{{ author.attributes.name }} {{ author.attributes.surname }}</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-       </template>
-     </v-list>
-   </v-layout>
- </v-container> 
+  <div class="author-search">
+      <el-col :span="24" class="search-results">
+        <el-table
+          :data="authors"
+          style="width: 100%"
+          @row-click="viewProfile">
+          <el-table-column
+            prop="name"
+            label="Name">
+          </el-table-column>
+          <el-table-column
+            prop="surname"
+            label="Surname">
+          </el-table-column>
+          <!-- <el-table-column
+            label="Books">
+            <template slot-scope="scope">
+             {{ scope.row.books.length }}
+            </template>
+          </el-table-column> -->
+        </el-table>
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 
 export default {
+  data () {
+    return {
+      authors: []
+    };
+  },
   methods: {
-    viewProfile (id) {
-      this.$router.push({ path: `/author/${id}` });
+    viewProfile (row, event, column) {
+      this.$router.push({ path: `/author/${row.id}` });
     }
   },
   created () {
-    this.$store.dispatch('fetchAuthors');
+    this.$store.dispatch('fetchAuthors').then(response => {
+      this.authors = response.data.data;
+    });
   },
-  computed: mapGetters(['authors']),
 };
 </script>
 
 <style>
-  .lista {
-    width: 100%;
+  .author-search {
+    padding: 1em;
   }
 </style>

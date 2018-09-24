@@ -12,5 +12,8 @@ export default {
   },
   async owned (store, id) {
     return API(store).get(`${config.API.AUTHOR_OWNERSHIP.ROOT}/${id}`);
+  },
+  async fetchAuthors (store) {
+    return API(store).get(`${config.API.AUTHORS.ROOT}`);
   }
 };

@@ -4,7 +4,7 @@
           <el-col :xs="24" :lg="12" :xl="12"><img :src="authorDetails.avatar_url"/></el-col>
           <el-col :xs="24" :lg="12" :xl="12">
             <div>
-              <el-button v-if="!authorOwned" type="primary" plain>Add as owned</el-button>
+              <el-button v-if="!authorOwned" type="primary" @click="addAuthor" >Add as owned</el-button>
               <el-tag v-if="authorOwned" type="primary">Owned</el-tag>
               <el-button v-if="!authorFavourite" type="danger" plain>Add to favourite</el-button>
               <el-tag v-if="authorFavourite" type="primary">Owned</el-tag>
@@ -61,13 +61,7 @@ export default {
   methods: {
     addAuthor () {
       this.$store
-        .dispatch('createOwnership', { author_id: this.$route.params.id })
-        .then(response => {
-          this.success = true;
-          this.successMsg = `${this.author.name} ${
-            this.author.surname
-          } has been added to your collection`;
-        });
+        .dispatch('createOwnership', { author_id: this.$route.params.id });
     },
     showBook (row, event, column) {
       this.$router.push({ path: `/books/${row.id}` });
