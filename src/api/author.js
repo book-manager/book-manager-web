@@ -15,5 +15,12 @@ export default {
   },
   async fetchAuthors (store) {
     return API(store).get(`${config.API.AUTHORS.ROOT}`);
+  },
+  async createAuthor (store, form) {
+    return API(store).post(`${config.API.AUTHORS.ROOT}`, { author: form });
+  },
+  async uploadAuthorAvatar (store, file, filename, authorID) {
+    console.log(file);
+    return API(store).post(`${config.API.AUTHORS.AVATAR}`, { file: file, name: filename, authorID: authorID });
   }
 };

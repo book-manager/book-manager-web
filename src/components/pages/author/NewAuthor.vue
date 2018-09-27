@@ -1,77 +1,80 @@
 <template>
-  <section>
-
-    <v-container elevation-3>
-      <v-alert
-        :value="error"
-        type="error"
-      >
-        {{ errorMessage }}
-      </v-alert>
-      <v-form v-model="valid">
-        <v-text-field
-          v-model="name"
-          :rules="nameRules"
-          label="Name"
-          required
-        ></v-text-field>
-        <v-text-field
-          v-model="surname"
-          :rules="surnameRules"
-          label="Surname"
-          required
-        ></v-text-field>
-        <v-textarea
-          name="input-7-1"
-          label="Description"
-          value=""
-          hint="Short author biography"
-          v-model="description"
-          :rules="descriptionRules"
-        ></v-textarea>
-
-        <v-btn
-          :disabled="!valid"
-          @click="addAuthor"
-        >
-          Add author
-        </v-btn>
-      </v-form>
-    </v-container>
-  </section>
+ <el-form ref="form" :model="form" class="author-form">
+  <el-alert
+    v-if="error"
+    :title="errorMsg"
+    type="error">
+  </el-alert>
+  <el-form-item label="Name">
+    <el-input v-model="form.name"></el-input>
+  </el-form-item>
+  <el-form-item label="Surname">
+    <el-input v-model="form.surname"></el-input>
+  </el-form-item>
+  <el-form-item label="Description">
+    <el-input
+    type="textarea"
+    autosize
+    placeholder="Description"
+    v-model="form.description">
+    </el-input>
+  </el-form-item>
+  <el-form-item>
+    <el-upload
+      class="upload-demo"
+      drag
+      :auto-upload="false"
+      :on-change="handleUpload"
+      ref="upload"
+      action="https://jsonplaceholder.typicode.com/posts/">
+      <i class="el-icon-upload"></i>
+      <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
+      <div class="el-upload__tip" slot="tip">jpg/png files with a size less than 500kb</div>
+    </el-upload>
+  </el-form-item>
+  <el-form-item>
+    <el-button type="primary" @click="addAuthor">Add</el-button>
+  </el-form-item>
+  </el-form>
 </template>
 
 <script>
   export default {
-    data: () => ({
-      error: false,
-      errorMessage: '',
-      valid: false,
-      name: '',
-      surname: '',
-      description: '',
-      nameRules: [
-        v => !!v || 'Name is required',
-      ],
-      surnameRules: [
-        v => !!v || 'Surname is required',
-      ],
-      descriptionRules: [
-        v => !!v || 'Description is required',
-      ]
-    }),
+    data () {
+      return {
+        form: {
+          name: '',
+          surname: '',
+          description: '',
+        },
+        file: {},
+        error: false,
+        errorMsg: ''
+      };
+    },
     methods: {
-      addAuthor (form) {
-        this.$store.dispatch('addAuthor', { name: this.name, surname: this.surname, description: this.description }).then(response => {
-          this.$router.push({ path: `/author/${response.data.id}` });
-        }).catch((error) => {
+      async addAuthor (form) {
+        if (this.file === {}) {
           this.error = true;
-          this.errorMessage = error;
-        });
+          this.errorMsg = 'You need to upload authors avatar';
+        }
+        const reader = new FileReader();
+        reader.readAsDataURL(this.file.raw);
+
+        const authorCreated = await this.$store.dispatch('addAuthor', { form: this.form });
+        await this.$store.dispatch('uploadAuthorAvatar', { file: reader.result, filename: this.file.name, authorID: authorCreated.data.id });
+
+        this.$router.push({ path: `/author/${authorCreated.data.id}` });
+      },
+      handleUpload (file, fileList) {
+        this.file = file;
       }
     }
   };
 </script>
 
 <style scoped>
+  .author-form {
+    padding: 1em;
+  }
 </style>
