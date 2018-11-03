@@ -1,49 +1,44 @@
 <template>
-<div class="navWrapper"  v-if="isLogged">
-    <div id="menu" :class="{ active: isActive }">
-      <el-menu mode="horizontal" :router="true" class="navbar">
-          <el-menu-item id="logo" index="/" :route="{ name: 'Root'}">
-            <logo></logo>
-          </el-menu-item>
-          <el-submenu index="authors-submenu">
-            <template slot="title">Authors</template>
-            <el-menu-item index="/author" :route="{ name: 'authors' }">My authors</el-menu-item>
-            <el-menu-item index="/author/search" :route="{ name: 'AuthorSearch' }">Search</el-menu-item>
-            <el-menu-item index="/author/new" :route="{ name: 'authorNew' }">Add</el-menu-item>
-          </el-submenu>
-          <el-submenu index="books-submenu">
-            <template slot="title">Books</template>
-            <el-menu-item index="/book" :route="{ name: 'Books' }">My books</el-menu-item>
-            <el-menu-item index="/book/search" :route="{ name: 'BookSearch' }">Search</el-menu-item>
-            <el-menu-item index="/book/new" :route="{ name: 'NewBook' }">Add</el-menu-item>
-          </el-submenu>
-          <el-submenu index="profile-submenu">
-            <template slot="title">{{ user.name }} {{ user.surname }}</template>
-            <el-menu-item index="/profile" :route="{ name: 'Profile' }">Profile</el-menu-item>
-          </el-submenu>
-      </el-menu>
+  <div>
+    <div class="navbar">
+      <Menu mode="horizontal" @on-select="routeTo" v-if="isLogged">
+        <div>
+          <Submenu name="authors">
+              <template slot="title">
+                  <Icon type="people"/>
+                  Authors
+              </template>
+              <MenuItem name="author">My authors</MenuItem>
+              <MenuItem name="all-authors">All</MenuItem>
+              <MenuItem name="/author/new">Add</MenuItem>
+          </Submenu>
+          <Submenu name="books">
+              <template slot="title">
+                  <Icon type="people"/>
+                  Books
+              </template>
+              <MenuItem name="author">My authors</MenuItem>
+              <MenuItem name="all-authors">All</MenuItem>
+              <MenuItem name="add-author">Add</MenuItem>
+          </Submenu>
+        </div>
+          <Submenu name="profile">
+              <template slot="title">
+                  <Icon type="people"/>
+                  {{ user.name }} {{ user.surname }}
+              </template>
+              <MenuItem name="author">Profile</MenuItem>
+              <MenuItem name="logout">Logout</MenuItem>
+          </Submenu>
+      </Menu>
     </div>
-    <div id="toggle" @click="select()">
-      <div class="span" id="top" :class="{ active: isActive }"></div>
-      <div class="span" id="middle" :class="{ active: isActive }"></div>
-      <div class="span" id="bottom" :class="{ active: isActive }"></div>
-    </div>
-</div>
+  </div>
 </template>
 
 <script>
   import { mapGetters } from 'vuex';
-  import Logo from '@/components/Logo';
 
   export default {
-    data () {
-      return {
-        isActive: false
-      };
-    },
-    components: {
-      Logo
-    },
     computed: mapGetters(['isLogged', 'user', 'incoming_requests']),
     created () {
       // this.$store.dispatch('checkPendingFriendships');
@@ -61,10 +56,20 @@
       },
       select () {
         this.isActive = !this.isActive;
+      },
+      routeTo (e) {
+        if (e === 'logout') {
+          return this.logout();
+        }
+        this.$router.push(e);
       }
     },
   };
 </script>
 
-<style scoped>
+<style>
+.ivu-menu {
+  display: flex;
+  justify-content: space-between;
+}
 </style>
