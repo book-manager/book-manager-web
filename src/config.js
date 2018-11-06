@@ -1,17 +1,17 @@
-const root = 'http://localhost:4000/';
+const root = process.env.ROOT_API + '/api/';
 export default {
   API: {
-    LOGIN: root + 'login',
-    REGISTER: root + 'register',
+    LOGIN: 'login',
+    REGISTER: 'register',
     FRIENDSHIP: {
-      PENDING: 'api/friendship/pending',
-      ADD: 'api/friendship',
-      CHECK: 'api/friendship/check-friendship',
-      INCOMING: 'api/friendship/check-incoming',
-      ACCEPT: 'api/friendship/accept'
+      PENDING: 'friendship/pending',
+      ADD: 'friendship',
+      CHECK: 'friendship/check-friendship',
+      INCOMING: 'friendship/check-incoming',
+      ACCEPT: 'friendship/accept'
     },
     FRIENDS: {
-      FETCH: 'api/friends/',
+      FETCH: 'friends/',
       SEARCH: root + 'api/friends/search',
       BOOKS: 'api/friends/book'
     },
@@ -21,7 +21,8 @@ export default {
       BOOKSAUTHOR: 'api/authors/owned/books',
       SEARCH: root + 'api/authors/search',
       OWNED: root + 'api/authors/owned',
-      OWNERSHIP: root + '/api/authors/ownership'
+      OWNERSHIP: root + '/api/authors/ownership',
+      AVATAR: root + '/api/authors/cover'
     },
     BOOKS: {
       ROOT: 'api/books',

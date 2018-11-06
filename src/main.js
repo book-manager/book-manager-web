@@ -7,25 +7,11 @@ import { sync } from 'vuex-router-sync';
 import store from './store';
 import './main.scss';
 
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import iView from 'iview';
 
-import Vuetify from 'vuetify';
-import 'vuetify/dist/vuetify.min.css';
+import 'iview/dist/styles/iview.css';
 
-import ImgInputer from 'vue-img-inputer';
-import 'vue-img-inputer/dist/index.css';
-
-import VueElementLoading from 'vue-element-loading';
-
-import VueStars from 'vue-stars';
-Vue.component('vue-stars', VueStars);
-Vue.component('VueElementLoading', VueElementLoading);
-
-Vue.component('ImgInputer', ImgInputer);
-Vue.use(Vuetify);
-
-Vue.use(ElementUI);
+Vue.use(iView);
 
 Vue.config.productionTip = false;
 

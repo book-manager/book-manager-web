@@ -1,12 +1,10 @@
 <template>
-<v-app>
   <div class="app-wrapper">
     <navbar></navbar>
     <div class="main-container">
       <router-view/>
     </div>
   </div>
-</v-app>
 </template>
 
 <script>
@@ -30,5 +28,6 @@
   text-align: center;
   margin-top: 60px;
   min-height: 50vh;
+  height: 100%;
 }
 </style>

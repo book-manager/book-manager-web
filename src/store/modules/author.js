@@ -34,19 +34,16 @@ const actions = {
     store.commit('AUTHOR_DETAILS', { author: results.data });
 
     const owned = await author.owned(store, id);
-    store.commit(AUTHOR_OWNED, { owned: owned.data });
+    store.commit(AUTHOR_OWNED, { owned: owned.data.owned });
   },
   async fetchAuthors (store) {
     return author.fetchAuthors(store);
   },
-  addAuthor (store, { name, surname, description }) {
-    return new Promise((resolve, reject) => {
-      Api(store).post(config.API.AUTHORS.ROOT, {
-        author: { name, surname, description }
-      }).then(response => {
-        resolve(response.data);
-      });
-    });
+  async addAuthor (store, { form, image }) {
+    return author.createAuthor(store, form, image);
+  },
+  async uploadAuthorAvatar (store, { file, filename, authorID }) {
+    return author.uploadAuthorAvatar(store, file, filename, authorID);
   },
   searchAuthor (store, { query }) {
     return new Promise((resolve, reject) => {

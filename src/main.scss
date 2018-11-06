@@ -1,6 +1,4 @@
 @import './variables.scss';
-@import './element-ui.scss';
-@import 'components/layout/navbar.scss';
 
 body {
   -webkit-font-smoothing: antialiased;
@@ -14,10 +12,6 @@ body {
   padding: 0;
 }
 
-h1 {
-  color: $primary-color;
-}
-
 a {
   text-decoration: none;
 }
@@ -28,4 +22,21 @@ a {
 
 .content-container {
   margin-top: 250px;
+}
+
+body, html {
+  height: 100%;
+}
+
+.bg {
+  /* The image used */
+  background-image: url("../static/bacground.png");
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
