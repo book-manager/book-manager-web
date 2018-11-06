@@ -39,8 +39,8 @@ const actions = {
   async fetchAuthors (store) {
     return author.fetchAuthors(store);
   },
-  async addAuthor (store, { form }) {
-    return author.createAuthor(store, form);
+  async addAuthor (store, { form, image }) {
+    return author.createAuthor(store, form, image);
   },
   async uploadAuthorAvatar (store, { file, filename, authorID }) {
     return author.uploadAuthorAvatar(store, file, filename, authorID);

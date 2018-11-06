@@ -1,41 +1,26 @@
 <template>
- <el-form ref="form" :model="form" class="author-form">
-  <el-alert
-    v-if="error"
-    :title="errorMsg"
-    type="error">
-  </el-alert>
-  <el-form-item label="Name">
-    <el-input v-model="form.name"></el-input>
-  </el-form-item>
-  <el-form-item label="Surname">
-    <el-input v-model="form.surname"></el-input>
-  </el-form-item>
-  <el-form-item label="Description">
-    <el-input
-    type="textarea"
-    autosize
-    placeholder="Description"
-    v-model="form.description">
-    </el-input>
-  </el-form-item>
-  <el-form-item>
-    <el-upload
-      class="upload-demo"
-      drag
-      :auto-upload="false"
-      :on-change="handleUpload"
-      ref="upload"
-      action="https://jsonplaceholder.typicode.com/posts/">
-      <i class="el-icon-upload"></i>
-      <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
-      <div class="el-upload__tip" slot="tip">jpg/png files with a size less than 500kb</div>
-    </el-upload>
-  </el-form-item>
-  <el-form-item>
-    <el-button type="primary" @click="addAuthor">Add</el-button>
-  </el-form-item>
-  </el-form>
+  <Form ref="form" :model="form" class="author-form">
+    <FormItem prop="surname">
+      <Input type="text" v-model="form.name" placeholder="Name" />
+    </FormItem>
+    <FormItem prop="surname">
+      <Input type="text" v-model="form.surname" placeholder="Surname" />
+    </FormItem>
+    <FormItem prop="description">
+      <Input type="textarea" v-model="form.description" placeholder="Description" />
+    </FormItem>
+
+    <FormItem>
+      <Upload
+        :before-upload="handleUpload"
+        action="//jsonplaceholder.typicode.com/posts/">
+        <Button icon="ios-cloud-upload-outline">{{ this.buttonName }}</Button>
+      </Upload>
+    </FormItem>
+    <FormItem>
+        <Button type="primary" ghost @click="addAuthor">Signin</Button>
+    </FormItem>
+  </Form>
 </template>
 
 <script>
@@ -46,28 +31,39 @@
           name: '',
           surname: '',
           description: '',
+          avatar_url: ''
         },
-        file: {},
+        file: null,
+        buttonName: 'Upload image',
         error: false,
         errorMsg: ''
       };
     },
     methods: {
       async addAuthor (form) {
-        if (this.file === {}) {
-          this.error = true;
-          this.errorMsg = 'You need to upload authors avatar';
+        if (this.file === null) {
+          this.$store.dispatch('addAuthor', { form: this.form, image: '' }).then(response => {
+            this.$router.push({ path: `/author/${response.data.id}` });
+          })
+        } else {
+          this.getBase64(this.file).then(data => {
+            this.$store.dispatch('addAuthor', { form: this.form, image: data }).then(response => {
+              this.$router.push({ path: `/author/${response.data.id}` });
+            })
+          });
         }
-        const reader = new FileReader();
-        reader.readAsDataURL(this.file.raw);
-
-        const authorCreated = await this.$store.dispatch('addAuthor', { form: this.form });
-        await this.$store.dispatch('uploadAuthorAvatar', { file: reader.result, filename: this.file.name, authorID: authorCreated.data.id });
-
-        this.$router.push({ path: `/author/${authorCreated.data.id}` });
       },
-      handleUpload (file, fileList) {
+      handleUpload (file) {
         this.file = file;
+        return false;
+      },
+      getBase64 (file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+        });
       }
     }
   };
@@ -76,5 +72,7 @@
 <style scoped>
   .author-form {
     padding: 1em;
+    max-width: 70%;
+    margin: auto;
   }
 </style>
