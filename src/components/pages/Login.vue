@@ -3,8 +3,8 @@
       <Row :gutter="16">
         <Col :lg="12" :xs="24">
         <Alert v-if="error" class="error" type="error" closable>{{ errorMessage }}</Alert>
-            <div class="title">
-              <h1>BookManger - Take control over your library</h1>
+            <div class="login-title">
+              <h1>BookManager - Take control over your library</h1>
             </div>
             <Form ref="form" :model="form" :rules="ruleInline" inline>
               <FormItem prop="email">
@@ -99,7 +99,7 @@
     width: 100%;
   }
 
-  .title {
+  .login-title {
     padding: 1em;
   }
 </style>

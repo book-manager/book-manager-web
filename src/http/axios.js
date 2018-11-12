@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 export default (store) => {
+  let ROOT_API = process.env.ROOT_API;
   let instance = axios.create({
-    baseURL: 'http://localhost:4000/',
+    baseURL: ROOT_API,
     headers: {
       Authorization: `Bearer: ${store.getters.token}`
     }
