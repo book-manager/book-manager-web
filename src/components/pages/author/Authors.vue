@@ -1,53 +1,55 @@
 <template>
-  <div class="author-search">
-      <el-col :span="24" class="search-results">
-        <el-table
-          :data="authors"
-          style="width: 100%"
-          @row-click="viewProfile">
-          <el-table-column
-            prop="name"
-            label="Name">
-          </el-table-column>
-          <el-table-column
-            prop="surname"
-            label="Surname">
-          </el-table-column>
-          <!-- <el-table-column
-            label="Books">
-            <template slot-scope="scope">
-             {{ scope.row.books.length }}
-            </template>
-          </el-table-column> -->
-        </el-table>
-      </el-col>
-    </el-row>
-  </div>
+  <section class="authors">
+    <Tabs value="authors">
+      <TabPane label="All" name="all">
+        <Table border :columns="headers" :data="all"  @on-row-click="viewProfile"></Table>
+      </TabPane>
+      <TabPane label="Owned" name="Owned">
+        <Table border :columns="headers" :data="authors"  @on-row-click="viewProfile"></Table>
+      </TabPane>
+    </Tabs>
+  </section>
 </template>
-
 <script>
 
 export default {
   data () {
     return {
-      authors: []
+      authors: [],
+      all: [],
+      loading: true,
+      headers: [
+        {
+          title: 'Name',
+          key: 'name'
+        },
+        {
+          title: 'Surname',
+          key: 'surname'
+        }
+      ]
     };
   },
   methods: {
-    viewProfile (row, event, column) {
-      this.$router.push({ path: `/author/${row.id}` });
+    viewProfile (selection, row) {
+      this.$router.push({ path: `/author/${selection.id}` });
     }
   },
   created () {
     this.$store.dispatch('fetchAuthors').then(response => {
       this.authors = response.data.data;
     });
+    this.$store.dispatch('allAuthors').then(response => {
+      this.all = response.data.data;
+    })
   },
 };
 </script>
 
 <style>
-  .author-search {
-    padding: 1em;
+  .authors {
+    max-width: 90%;
+    position: relative;
+    margin: auto;
   }
 </style>

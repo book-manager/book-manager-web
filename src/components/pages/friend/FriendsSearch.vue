@@ -1,34 +1,12 @@
 <template>
-  <section>
-    <v-container fluid grid-list-xl>
-      <v-layout row justify-space-between>
-        <v-flex xs8 xl10>
-           <v-text-field
-              name="search"
-              label="Search for a friend"
-              id="searchBox"
-              v-model="query"
-            ></v-text-field>
-        </v-flex>
-        <v-flex xs4 xl2>
-          <v-btn @click="search">Search</v-btn>
-        </v-flex>
-      </v-layout>
-      <v-layout row elevation-5>
-        <v-list class="lista">
-          <template v-for="user in users">
-            <v-list-tile avatar :key="user.attributes.id" class="user-list" @click="viewProfile(user.attributes.id)">
-              <v-list-tile-avatar>
-                <img :src="user.attributes.avatar_url">
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ user.attributes.name }} {{ user.attributes.surname }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </template>
-        </v-list>
-      </v-layout>
-    </v-container>
+  <section class="friends">
+    <div class="search-bar">
+      <Input v-model="query" placeholder="Search for a friends" />
+      <Button class="search-button" type="primary" @on-click="search" ghost>Search</Button>
+    </div>
+    <div class="search-results">
+      <Table border :columns="headers" :data="users" @on-row-click="viewProfile"></Table>
+    </div>
   </section>
 </template>
 
@@ -36,12 +14,22 @@
 export default {
   data () {
     return {
-      query: ''
+      query: '',
+      headers: [
+        {
+          title: 'Name',
+          key: 'name'
+        },
+        {
+          title: 'Surname',
+          key: 'surname'
+        }
+      ]
     };
   },
   methods: {
     search () {
-      this.$store.dispatch('searchUsers', this);
+      this.$store.dispatch('searchUsers', this.query);
     },
     viewProfile (id) {
       this.$router.push({ path: `/user/${id}` });
@@ -56,8 +44,18 @@ export default {
 </script>
 
 <style scoped>
-  /* .lista {
+  .friends {
+    max-width: 90%;
+    position: relative;
+    margin: auto;
+  }
+  .search-bar {
     display: flex;
-    justify-content: flex-end;
-  } */
+    justify-content: space-between;
+    padding-bottom: 1em;
+  }
+
+  .search-button {
+    margin-left: 1em;
+  }
 </style>

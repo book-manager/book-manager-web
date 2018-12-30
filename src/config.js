@@ -1,4 +1,5 @@
-const root = process.env.ROOT_API + '/api/';
+// const root = process.env.ROOT_API + '/api/';
+
 export default {
   API: {
     LOGIN: 'login',
@@ -11,18 +12,18 @@ export default {
       ACCEPT: 'friendship/accept'
     },
     FRIENDS: {
-      FETCH: 'friends/',
-      SEARCH: root + 'api/friends/search',
+      FETCH: 'api/friends/',
+      SEARCH: 'api/friends/search',
       BOOKS: 'api/friends/book'
     },
     AUTHORS: {
       ROOT: 'api/authors',
       BOOKS: 'api/authors/books',
       BOOKSAUTHOR: 'api/authors/owned/books',
-      SEARCH: root + 'api/authors/search',
-      OWNED: root + 'api/authors/owned',
-      OWNERSHIP: root + '/api/authors/ownership',
-      AVATAR: root + '/api/authors/cover'
+      SEARCH: 'api/authors/search',
+      OWNED: 'api/authors/owned',
+      OWNERSHIP: '/api/authors/ownership',
+      AVATAR: '/api/authors/cover'
     },
     BOOKS: {
       ROOT: 'api/books',

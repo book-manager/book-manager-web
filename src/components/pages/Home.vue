@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 class="is-size-1 has-text-centered">Welcome home, {{user.first_name}}!</h1>
+        <h1 class="is-size-1 has-text-centered">Welcome home, {{ user.name }} {{ user.surname }} !</h1>
     </div>
 </template>
 

@@ -14,7 +14,7 @@ export default {
     return API(store).get(`${config.API.AUTHOR_OWNERSHIP.ROOT}/${id}`);
   },
   async fetchAuthors (store) {
-    return API(store).get(`${config.API.AUTHORS.ROOT}`);
+    return API(store).get(`${config.API.AUTHORS.OWNED}`);
   },
   async createAuthor (store, form, image) {
     return API(store).post(`${config.API.AUTHORS.ROOT}`, { author: { form: form, image: image } });
@@ -22,5 +22,8 @@ export default {
   async uploadAuthorAvatar (store, file, filename, authorID) {
     console.log(file);
     return API(store).post(`${config.API.AUTHORS.AVATAR}`, { file: file, name: filename, authorID: authorID });
+  },
+  async allAuthors (store) {
+    return API(store).get(`${config.API.AUTHORS.ROOT}`);
   }
 };

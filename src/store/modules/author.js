@@ -45,6 +45,9 @@ const actions = {
   async uploadAuthorAvatar (store, { file, filename, authorID }) {
     return author.uploadAuthorAvatar(store, file, filename, authorID);
   },
+  async allAuthors (store) {
+    return author.allAuthors(store);
+  },
   searchAuthor (store, { query }) {
     return new Promise((resolve, reject) => {
       axios.get(`${config.API.AUTHORS.SEARCH}/${query}`, {
