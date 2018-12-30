@@ -13,3 +13,4 @@ export const FETCH_BOOKS = 'FETCH_BOOKS';
 
 // Global
 export const LOADING = 'LOADING';
+export const SHOW_ERROR = 'SHOW_ERROR';

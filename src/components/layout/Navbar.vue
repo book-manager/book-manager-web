@@ -8,8 +8,7 @@
                   <Icon type="people"/>
                   Authors
               </template>
-              <MenuItem name="author">My authors</MenuItem>
-              <MenuItem name="all-authors">All</MenuItem>
+              <MenuItem name="/authors">List</MenuItem>
               <MenuItem name="/author/new">Add</MenuItem>
           </Submenu>
           <Submenu name="books">
@@ -20,6 +19,14 @@
               <MenuItem name="author">My authors</MenuItem>
               <MenuItem name="all-authors">All</MenuItem>
               <MenuItem name="add-author">Add</MenuItem>
+          </Submenu>
+          <Submenu name="friends">
+              <template slot="title">
+                  <Icon type="people"/>
+                  Friends
+              </template>
+              <MenuItem name="/friends">My friends</MenuItem>
+              <MenuItem name="/friends/search">Search</MenuItem>
           </Submenu>
         </div>
           <Submenu name="profile">

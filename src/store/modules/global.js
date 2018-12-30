@@ -1,5 +1,6 @@
 import {
-  LOADING
+  LOADING,
+  SHOW_ERROR
 } from '../mutation-types';
 
 const state = {
@@ -19,12 +20,19 @@ const actions = {
     return new Promise((resolve, reject) => {
       store.commit(LOADING);
     });
+  },
+  showError (store, { message }) {
+    store.commit(SHOW_ERROR, { message: message });
   }
 };
 
 const mutations = {
   [LOADING] (store) {
     store.loading = !store.loading;
+  },
+  [SHOW_ERROR] (store, { message }) {
+    store.error = true;
+    store.errorMessage = message;
   }
 };
 

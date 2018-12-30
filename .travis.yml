@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - "lts/*"
+
+env:
+  global:
+    - PATH=$HOME/.local/bin:$PATH
+    - ROOT_API="https://api.bookmanager.pro"
+
+before_install:
+  - pip install --user awscli
+
+script:
+  - npm install
+  - npm run build
+  - aws s3 sync . s3://frontend-bookmanager
+  - aws cloudfront create-invalidation --distribution-id "E1IK9KALN6B47E" --paths /*

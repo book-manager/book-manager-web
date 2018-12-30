@@ -50,7 +50,7 @@ const mainRoutes = [
 
 const authorRoutes = [
   {
-    path: '/author',
+    path: '/authors',
     name: 'authors',
     component: Authors,
     meta: {auth: true}

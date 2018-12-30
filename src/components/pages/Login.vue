@@ -2,8 +2,9 @@
   <section class="bg">
       <Row :gutter="16">
         <Col :lg="12" :xs="24">
-            <div class="title">
-              <h1>BookManger - Take control over your library</h1>
+        <Alert v-if="error" class="error" type="error" closable>{{ errorMessage }}</Alert>
+            <div class="login-title">
+              <h1>BookManager - Take control over your library</h1>
             </div>
             <Form ref="form" :model="form" :rules="ruleInline" inline>
               <FormItem prop="email">
@@ -17,7 +18,7 @@
                 </Input>
               </FormItem>
               <FormItem>
-                  <Button type="primary" @click="login">Signin</Button>
+                  <Button type="primary" @click="login('form')">Signin</Button>
               </FormItem>
             </Form>
         </Col>
@@ -49,28 +50,39 @@
       };
     },
     methods: {
-      login () {
-        this.pending = true;
-        this.$store.dispatch('login', this.form)
-          .then(() => {
-            this.pending = false;
-            this.$router.push({name: 'home'});
-          })
-          .catch(err => {
-            this.pending = false;
-            this.error = err;
-          });
+      login (name) {
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            this.$store.dispatch('login', this.form)
+            .then(() => {
+              this.$router.push({name: 'home'});
+            });
+          };
+        })
       }
     },
     computed: {
       valid () {
         return this.password.length >= 7;
+      },
+      errorMessage () {
+        return this.$store.getters.errorMessage;
+      },
+      error () {
+        return this.$store.getters.error;
+      },
+      disabled () {
+        return false;
       }
     }
   };
 </script>
 
 <style scoped>
+  .error {
+    max-width: 70%;
+    margin: auto;
+  }
   .login-form {
     width: 30%;
     text-align: center;
@@ -87,7 +99,7 @@
     width: 100%;
   }
 
-  .title {
+  .login-title {
     padding: 1em;
   }
 </style>
